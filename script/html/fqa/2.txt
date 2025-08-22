@@ -1,0 +1,81 @@
+<t2>FASTQ文件格式特点</t2>
+<p1>FASTQ文件，包含了测序读段（reads）的序列信息以及其对应的碱基质量信息。测序样品中真实数据随机截取结果如下：</p1>
+<p1>FASTQ格式文件中每个read由四行描述，如下：</p1>
+<p3-70 style='color:#e4af65'>@ST-E00211:153:HL7L2CCXX:8:1101:26362:2153 1:N:0:ATGTCAGA</p3-70>
+<p3-70 style='color:#9cbe69'>CTCCTTTTCTTTGTCTATGTTGTACATTTTCATGATATAACTTTTAACTATGTCTAGAG</p3-70>
+<p3-70>+</p3-70>
+<p3-70 style='color:#7fbdcb'>AFFFFKFKAKKKKKKKKKKKKKKKKKKKFKKFKKKKKKKKKKKKKKKKKKKKKKKKKKK</p3-70>
+<p1>第一行以“@”开头，随后为Illumina 测序标识符（Sequence Identifiers）和描述文字（选择性部分）；</p1>
+<p1>第二行为碱基序列；</p1>
+<p1>第三行以“+”开头，随后为Illumina 测序标识符（选择性部分）；</p1>
+<p1>第四行为对应序列的测序质量。</p1>
+<table border=0 style='margin:auto;text-align:left'>
+<tr><td style='border-top:2px #000000 solid;padding:8px'>文件识别标识</td><td style='border-top:2px #000000 solid;padding:8px'>详细信息</td></tr>
+<tr><td style='background-color:#d6e3bc;padding:8px;border-top:1px #000000 solid;'>
+	@ST-E00211
+	</td><td style='background-color:#d6e3bc;padding:8px;border-top:1px #000000 solid;'>
+	Unique instrument name
+	</td>
+</tr>
+<tr><td style='padding:8px;'>
+	153
+	</td><td style='padding:8px;'>
+	Run ID
+	</td>
+</tr>
+<tr><td style='background-color:#d6e3bc;padding:8px;'>
+	HL7L2CCXX
+	</td><td style='background-color:#d6e3bc;padding:8px;'>
+	Flowcell ID
+	</td>
+</tr>
+<tr><td style='padding:8px;'>
+	8
+	</td><td style='padding:8px;'>
+	Flowcell lane
+	</td>
+</tr>
+<tr><td style='background-color:#d6e3bc;padding:8px;'>
+	1101
+	</td><td style='background-color:#d6e3bc;padding:8px;'>
+	Tile number within the flowcell lane
+	</td>
+</tr>
+<tr><td style='padding:8px;'>
+	26362
+	</td><td style='padding:8px;'>
+	'x'-coordinate of the cluster within the tile
+	</td>
+</tr>
+<tr><td style='background-color:#d6e3bc;padding:8px;'>
+	2153
+	</td><td style='background-color:#d6e3bc;padding:8px;'>
+	'y'-coordinate of the cluster within the tile
+	</td>
+</tr>
+<tr><td style='padding:8px;'>
+	1
+	</td><td style='padding:8px;'>
+	Member of a pair, 1 or 2 (paired-end or mate-pair reads only)
+	</td>
+</tr>
+<tr><td style='background-color:#d6e3bc;padding:8px;'>
+	N
+	</td><td style='background-color:#d6e3bc;padding:8px;'>
+	Y if the read fails filter (read is bad), N otherwise
+	</td>
+</tr>
+<tr><td style='padding:8px;'>
+	0
+	</td><td style='padding:8px;'>
+	0 when none of the control bits are on, otherwise it is an even number
+	</td>
+</tr>
+<tr><td style='background-color:#d6e3bc;padding:8px;border-bottom:2px #000000 solid;'>
+	ATGTCAGA
+	</td><td style='background-color:#d6e3bc;padding:8px;border-bottom:2px #000000 solid;'>
+	Index sequence
+	</td>
+</tr>
+</table>
+

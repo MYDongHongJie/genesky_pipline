@@ -1,0 +1,78 @@
+<t2>通讯网络分析</t2>
+<p1>采用CellChat软件对每个分组中的细胞类型进行通讯分析。本分析依赖配体受体数据库，目前仅支持人和小鼠。
+</p1>
+<p1>最终数据统计如下：
+</p1>
+<p2>表. 显著基因结果表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/CellChat_*_Summary.xlsx -s 1 --scroll</get>
+<span><br></span>
+<p1>表格标题说明：
+</p1>
+<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/CellChat_*_Summary.xlsx -s README.1</get>
+
+<span><br></span>
+<p2>表. 通讯网络count结果表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/CellChat_*_Summary.xlsx -s 2</get>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Network_Images/network_count_circle.png</pics>
+<p2>图. Count值通讯网络图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Network_Images/network_celltype_count_circle.png</pics>
+<p2>图. 各个细胞类型Count值通讯网络图。</p2>
+
+<span><br></span>
+<p2>表. 通讯网络weight结果表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/CellChat_*_Summary.xlsx -s 3</get>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Network_Images/network_weight_circle.png</pics>
+<p2>图. Weight值通讯网络图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Network_Images/network_celltype_weight_circle.png</pics>
+<p2>图. 各个细胞类型Weight值通讯网络图。</p2>
+
+<span><br></span>
+<p2>表. 受体配体数据表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/CellChat_*_Summary.xlsx -s 5 --scroll</get>
+<span><br></span>
+<p1>表格标题说明：
+</p1>
+<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/CellChat_*_Summary.xlsx -s README.2</get>
+
+<span><br></span>
+<p1>通路分析结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Network_Images/network_pathway_circle.png</pics>
+<p2>图. 各个通路的通讯网络图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Network_Images/network_pathway_chord.png</pics>
+<p2>图. 各个通路的通讯网络圈图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Network_Images/network_pathway_heatmap.png</pics>
+<p2>图. 各个通路的通讯网络热图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Network_Images/network_bubble.png</pics>
+<p2>图. 通路网络气泡图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+显著基因结果表(sheet 1)			= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/CellChat_*_Summary.xlsx;
+通讯网络count结果表(sheet 2)	= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/CellChat_*_Summary.xlsx;
+通讯网络weight结果表(sheet 3)	= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/CellChat_*_Summary.xlsx;
+受体配体数据表(sheet 5)			= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/CellChat_*_Summary.xlsx;
+Count值通讯网络图				= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Network_Images/network_count_circle.png;
+Weight值通讯网络图				= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Network_Images/network_weight_circle.png;
+各个细胞类型Count值通讯网络图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Network_Images/network_celltype_count_circle.png;
+各个细胞类型Weight值通讯网络图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Network_Images/network_celltype_weight_circle.png;
+各个通路的通讯网络图			= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Network_Images/network_pathway_circle.png;
+各个通路的通讯网络圈图			= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Network_Images/network_pathway_chord.png;
+各个通路的通讯网络热图			= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Network_Images/network_pathway_heatmap.png;
+通路网络气泡图					= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Network_Images/network_bubble.png;
+'</get>

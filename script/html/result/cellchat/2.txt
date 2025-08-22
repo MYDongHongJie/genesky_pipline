@@ -1,0 +1,27 @@
+<t2>贡献度分析</t2>
+<span><br></span>
+<p1>贡献度分析主要计算细胞通讯中各个因素的重要性占比：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Contribution_Images/contribution_centrality_scores.png</pics>
+<p2>图. 通讯模式重要性热图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Contribution_Images/contribution_ligand_receptor_pair.png</pics>
+<p2>图. 配体受体对贡献度分布图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Contribution_Images/contribution_outgoing_incoming_scatter.png</pics>
+<p2>图. 通讯模式占比分布图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Contribution_Images/contribution_outgoing_incoming_heatmap.png</pics>
+<p2>图. 通讯模式热图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+通讯模式重要性热图		= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Contribution_Images/contribution_centrality_scores.png;
+配体受体对贡献度分布图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Contribution_Images/contribution_ligand_receptor_pair.png;
+通讯模式占比分布图		= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Contribution_Images/contribution_outgoing_incoming_scatter.png;
+通讯模式热图			= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Contribution_Images/contribution_outgoing_incoming_heatmap.png;
+'</get>

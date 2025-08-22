@@ -1,0 +1,4 @@
+<t2>实验流程图</t2>
+<upic>/D_TEMP/picture/exp_pipe.png</upic>
+<span><br></span>
+<p2>图. 单细胞转录组测序(10x Genomics)实验流程图</p2>

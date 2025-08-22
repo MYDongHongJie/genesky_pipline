@@ -1,0 +1,2 @@
+<t2>软件列表</t2>
+<get>perl /D_TEMP/get/soft.pl</get>

@@ -1,0 +1,20 @@
+<t2>不同类型RNA的表达水平采用什么定量方法？</t2>
+<p1><strong>1)&nbsp;&nbsp;mRNA、lncRNA的表达定量方法：</strong></p1>
+<p1>一个基因表达水平的直接体现就是其转录本的丰度情况，转录本丰度程度越高，则基因表达水平越高。在RNA-seq分析中，
+我们可以通过定位到基因组区域或基因外显子区的测序序列(reads)的计数来估计基因的表达水平。Reads计数除了与基因的真实表达水平成正比外，
+还与基因的长度和测序深度成正相关。为了使不同基因、不同实验间估计的基因表达水平具有可比性，人们引入了FPKM的概念，
+即计算每个基因/转录本在样本中的FPKM值，以该值作为基因/转录本在样本中的表达量。FPKM是每百万reads中来自某一基因每千碱基长度的fragments数目，
+即两个reads能比对到同一个转录本的fragments数量。由于各基因碱基长度不同，在分析其特定表达量时，会将比对上的测序条数和其基因长度关联分析（具体公式见下）：
+</p1>
+<ppic>picture/fpkm.png</ppic>
+<p1>举例：比如对应到基因A的fragment有1000个，mapped到基因组的总fragments个数有100万，而基因A的外显子总长为5kb，那么对于基因A来说，
+total exon fragments=1000, mapped reads(millions)=1, exon length(kb)=5。所以基因A的FPKM=1000/(1*5)=200。此处，有的RNAseq数据分析结果里面会采用RPKM值统计表达量。
+RPKM和FPKM公式几乎一样，不同点就是FPKM计算的是片段（fragments），而RPKM计算的是数据（reads）。Fragment比read的含义更广，可以指pair-end的一个fragment，也可以是一个read。
+</p1>
+<p1><strong>2)&nbsp;&nbsp;circRNA的表达定量方法：</strong></p1>
+<p1>circRNA的定量采用直接计数的方式，将样本中检测到的来自该circRNA的reads数作为其表达量，在CIRI软件的输出结果中，会给出每个circRNA对应的表达量。
+</p1>
+<p1><strong>3)&nbsp;&nbsp;miRNA的表达定量方法：</strong></p1>
+<p1>miRNA的定量也是采用直接计数的方式，将样本中检测到的来自该miRNA的reads数作为其表达量。
+</p1>
+

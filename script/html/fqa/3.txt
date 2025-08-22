@@ -1,0 +1,45 @@
+<t2>FASTQ文件碱基质量表示</t2>
+<p1>碱基的质量分数以碱基质量值（Q）加上33所对应的ASCII字符表示，碱基质量通常从0-40（即Q0-Q40），ASCII码因此从 "！" (0+33) 到 "I" (40+33)。
+以E表示测序错误率，以Q表示碱基质量值，则：
+</p1>
+<p1>Q = -10log<sub>10</sub>(E)</p1>
+<p1>测序错误率E与测序质量值Q简明对应关系如下表：</p1>
+<table border=0 style='margin:auto;text-align:left'>
+<tr><td style='border-top:2px #000000 solid;padding:8px'>测序错误率（E）</td>
+	<td style='border-top:2px #000000 solid;padding:8px'>测序质量值（Q）</td>
+	<td style='border-top:2px #000000 solid;padding:8px'>对应ASCII码</td>
+</tr>
+<tr><td style='background-color:#d6e3bc;padding:8px;border-top:1px #000000 solid;'>
+	5%
+	</td><td style='background-color:#d6e3bc;padding:8px;border-top:1px #000000 solid;'>
+	13
+	</td><td style='background-color:#d6e3bc;padding:8px;border-top:1px #000000 solid;'>
+	.
+	</td>
+</tr>
+<tr><td style='padding:8px;'>
+	1%
+	</td><td style='padding:8px;'>
+	20
+	</td><td style='padding:8px;'>
+	5
+	</td>
+</tr>
+<tr><td style='background-color:#d6e3bc;padding:8px;'>
+	0.1%
+	</td><td style='background-color:#d6e3bc;padding:8px;'>
+	30
+	</td><td style='background-color:#d6e3bc;padding:8px;'>
+	?
+	</td>
+</tr>
+<tr><td style='padding:8px;border-bottom:2px #000000 solid;'>
+	0.01%
+	</td><td style='padding:8px;border-bottom:2px #000000 solid;'>
+	40
+	</td><td style='padding:8px;border-bottom:2px #000000 solid;'>
+	I
+	</td>
+</tr>
+</table>
+

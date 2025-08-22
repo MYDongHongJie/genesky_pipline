@@ -1,0 +1,95 @@
+executor: qsub
+#jobs: :3
+header:
+  output: "result" #最终生成的数据结果路径
+  species: "human" #mouse or human or other ,如果是other,填写 tfdb,motifdb,featuredb路径
+  organization: 'pbmc' #组织信息，用来做singleR鉴定，目前支持任何小鼠的部分组织
+  pattle: "customecol2_light"
+  tmp_dir: "tmp" #临时文件路径
+  sample_info: "sample_info.txt" #样本信息表，第一列是sample，第二列是group
+  cellranger_version: "7.1.0" #cellranger版本,可选['3.0.0','3.1.0','6.1.2']
+  #used_batch: "singlecell" 投递的节点，，目前还不知道服务器的分配情况，所以先不写
+  contract_number: "25D0716B"
+  project_name: "单细胞转录组测试项目"
+  department: "陕西理工大学"
+  sequencing: "Illumina 2x150bp"
+  platform: "10X" #10X or huadaC4
+  cellranger_Analysis: FALSE #是否进行cellranger，默认TRUE
+  Standard_Analysis: FALSE #是否需要标准分析，默认FALSE
+  Report_create: FALSE #是否需要生成报告，默认FALSE
+cellranger:
+  fastq_load: NULL #如果需要从fastq文件开始分析，填写fastq文件路径，比如/home/genesky/data/10X_singlecell3/fastq;如果为NULL，会自动判断前面fastp生成的路径
+  forcell: NULL #强制细胞数，目前只支持1个数据，还不支持1个样本1个细胞数
+  include_introns: TRUE #是否需要分析内含子，默认TRUE
+  nobam: FALSE #是否不生成bam文件，默认FALSE
+  base_count_gt: 120G #合同里面给的最高测序量
+  base_count_le: 30G #合同里面给的最低测序量
+  cell_count: 2000 #合同里面给的最低细胞数
+#常规分析的一些参数
+create:
+  script: "script/genesky_singlcell_tools.r"  #别动，除非改了脚本路径
+  input_file:  NULL   #填写cellranger路径,自动化流程是根据cellranger的输出路径来获取文件，除非是外来数据或者 已经做完cellranger的文件重新分析，否则不需要填写
+  mincells: 3 #一个基因最少要在多少个细胞表达
+  minfeatures: 200 #一个细胞最少有多少个基因表达
+QC:
+  script: "script/genesky_singlcell_tools.r"  #别动，除非改了脚本路径
+  mtpercent: 20 #线粒体基因占比过滤，默认20%，如果参考基因组没有线粒体文件，则不过滤，必须给两个数字,逗号分隔，表示范围,如果为NULL，则不过滤
+  nFeature_RNA: "400,7000" #基因数过滤，默认400-7000,必须给两个数字,逗号分隔，表示范围
+  nCount_RNA: "0,50000" #UMI数过滤，默认0-50000,必须给两个数字,逗号分隔，表示范围
+  extra_file: NULL #如果需要额外过滤的文件，列名就是过滤的标签，比如percent_HB,percent_RP ,行为gene
+  extra_col: NULL #如果需要额外过滤的标签，必须是提供的过滤文件的列名，比如percent_HB,percent_RP
+  extra_percent: "20,20" #如果需要额外过滤的百分比，默认20,长度和extra_col一样
+  doublet: TRUE #是否需要去除双细胞，默认FALSE，如果需要，填写TRUE
+  chem_version: "other" #实验室使用的试剂版本，如果确认是v4版本，改成'v4'
+  #mem_mb: 20000
+Seurat_Cluster:
+  script: "script/genesky_singlcell_tools.r"  #别动，除非改了脚本路径
+  gather: "harmony"  #可以选PCA,harmony,CCA
+  cycle: TRUE #默认做细胞周期分析，如果是非人大小鼠，改为FALSE
+  rely: "sample.name" #基于细胞标签去批次,sample.name或者group
+  res: 0.6 #分辨率，默认大类0.6
+  dim: NULL  #默认会自己计算，也可以自己指定，eg：30
+  regression: NULL #如果marker基因都是线粒体或者周期相关的基因，可以将"percent.mt"和"CC.Difference"加入，用逗号分隔
+visualize:
+  #reductions: "umap,tsne" #降维聚类方式，可以只选择1个
+  script: "script/genesky_singlcell_tools.r"  #别动，除非改了脚本路径
+  pointsize: NULL #dimplot图的点的大小,为null时会自动计算
+marker: 
+  script: "script/genesky_singlcell_tools.r"  #别动，除非改了脚本路径
+  min_pct: 0.1 #findallmarker的参数，表示这个基因最小的表达比例
+  logfcthreshold: 0.25 #findallmarker的参数,FC值
+  topn: 10 #展示每个cluster的top基因数去绘图
+  avetopn: 30 #选择每个cluster的前n个进行绘制热图
+enrichment:
+  script: "script/genesky_singlcell_tools.r"
+  topn: 10 #选择前n个通路去绘制kegg结果
+  rankby: "pvalue" #根据富集结果的哪一列去排序绘制和弦图
+singleR:
+  script: "script/genesky_singlcell_tools.r"
+  ref: NULL #参考的rds文件，默认是注释好的rds文件，如果需要自己指定，填写注释好的rds文件路径,一般会根据前面的物种和组织自动寻找，除非有特定的需要特别指定
+  groupby: "celltype" #选择背景rds的哪一列去注释，默认是celltype
+  downsample: 30000 #如果样本细胞数太多，会随机抽取30000个细胞去注释
+#二次降维聚类
+subcluster:
+  module:
+      subcell: FALSE #是否需要二次降维聚类，默认FALSE
+      celltype: TRUE #是否需要细胞类型注释，默认FALSE
+      diffexp: FALSE #是否需要差异分析，默认FALSE
+      cellchat: FALSE #是否需要细胞通讯分析，默认FALSE
+      monocle: FALSE #是否需要monocle分析，默认FALSE
+      scenic: FALSE #是否需要scenic分析，默认FALSE
+      scvelo: FALSE #是否需要scvelo分析，默认FALSE
+  subset: "all" #ALL表示用全部细胞 #"celltype:Bcell,Tcell;sample.name:sample1" #子类 可以按照sample.name和celltype,group等细胞标签去进行重降维，多个标签用分号分隔 [subcell和celltype]参数
+  celltype_file: "anno.txt" #细胞类型注释文件，填写注释文件路径
+  pointsize: NULL #dimplot图的点的大小,为null时会自动计算
+  re_sample_diff_file: "re_sample_diff.txt" #重新分组,重新重命名样本的信息
+  Diff_contract: "group:case:control,group1:case:case1,group2:control:control1" #分组比较的信息，用逗号分隔，用冒号分隔case和control
+  
+  Anova_contact: "case:control1:control2,case2:control1:control2" #三组比较的信息，用逗号分隔，用冒号分隔case和control
+
+
+
+software:
+  fastqc: "/home/genesky/software/fastqc/0.11.9/fastqc"
+  Seqtk: "/home/genesky/software/seqtk/1.3-r106/seqtk"
+  fastp: "/home/genesky/software/fastp/0.23.2/fastp"

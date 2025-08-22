@@ -1,0 +1,8 @@
+<t2>实验试剂与仪器</t2>
+<p1>主要器材</p1>
+<span><br></span>
+<get>perl /D_TEMP/get/expinfo.pl 1</get>
+<span><br></span>
+<p1>主要试剂</p1>
+<span><br></span>
+<get>perl /D_TEMP/get/expinfo.pl 2</get>

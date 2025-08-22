@@ -1,0 +1,48 @@
+<t1>双细胞检测</t1>
+<p1>采用scDblFinder软件，该软件通过生成模拟双细胞，并将所有细胞与模拟双细胞比较筛选出可靠的双细胞。
+</p1>
+<p1>双细胞分析结果如下：
+</p1>
+<p2>表. 聚类水平双细胞结果统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/*.Doublet_Cell/Doublet_Cell_Summary.xlsx -s 1 --scroll</get>
+<span><br></span>
+<p2>表. 样本水平双细胞结果统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/*.Doublet_Cell/Doublet_Cell_Summary.xlsx -s 2 --scroll</get>
+<span><br></span>
+<p2>表. 双细胞结果统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/*.Doublet_Cell/Doublet_Cell_Summary.xlsx -s 3 --scroll</get>
+<span><br></span>
+<p1>表格标题说明：
+</p1>
+<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/*.Doublet_Cell/Doublet_Cell_Summary.xlsx -s README</get>
+
+<span><br></span>
+<p1>细胞聚类UMAP图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Doublet_Cell/clusters_umap.png</pics>
+<p2>图. 细胞聚类UMAP图。</p2>
+
+<span><br></span>
+<p1>双细胞分布UMAP图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Doublet_Cell/doublet_umap.png</pics>
+<p2>图. 双细胞分布UMAP图。</p2>
+
+<span><br></span>
+<p1>双细胞分布热图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Doublet_Cell/heatmap.png</pics>
+<p2>图. 双细胞分布热图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+聚类水平双细胞结果统计表(sheet 1)	= SCGES_*/*.Doublet_Cell/Doublet_Cell_Summary.xlsx;
+样本水平双细胞结果统计表(sheet 2)	= SCGES_*/*.Doublet_Cell/Doublet_Cell_Summary.xlsx;
+双细胞结果统计表(sheet 3)			= SCGES_*/*.Doublet_Cell/Doublet_Cell_Summary.xlsx;
+细胞聚类UMAP图						= SCGES_*/*.Doublet_Cell/clusters_umap.png;
+双细胞分布UMAP图					= SCGES_*/*.Doublet_Cell/doublet_umap.png;
+双细胞分布热图						= SCGES_*/*.Doublet_Cell/heatmap.png;
+'</get>

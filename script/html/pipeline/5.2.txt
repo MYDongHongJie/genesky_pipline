@@ -1,0 +1,4 @@
+<t2>分析内容</t2>
+<p1>本项目生物信息学分析内容见下表（√打勾部分）：</p1>
+<p2>生物信息分析内容</p2>
+<get>perl /D_TEMP/get/bioinfo.pl /D_REPORT/ D_GROUP</get>

@@ -1,0 +1,44 @@
+<t2>细胞表达水平质控</t2>
+<p1>采用Seurat软件进一步对细胞进行质控。质控条件如下：
+</p1>
+<p3-30>1、剔除在小于3个细胞中表达的基因；</p3-30>
+<p3-30>2、剔除大于9000个基因表达的细胞；</p3-30>
+<p3-30>3、剔除小于200个基因表达的细胞；</p3-30>
+<p3-30>4、剔除来源于线粒体基因的UMI占比过高(肿瘤50%，其它20%)的细胞；</p3-30>
+<p1>各样本细胞质控结果如下：
+</p1>
+<p2>表. 各样本细胞质控结果统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/03.Cell_QC/QC_cell_counts_per_step.xlsx -s 1</get>
+<span><br></span>
+
+#<span><br></span>
+#<p1>细胞信息如下：
+#</p1>
+#<p2>表. 细胞信息统计表。</p2>
+#<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/03.Cell_QC/QC_cell_counts_per_step.xlsx -s 2 -ml 20 --scroll</get>
+#<span><br></span>
+#<p1>表格标题说明：
+#</p1>
+#<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/03.Cell_QC/QC_cell_counts_per_step.xlsx -s README</get>
+
+<span><br></span>
+<p1>质控后细胞统计数据散点图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/03.Cell_QC/Cell_Quality_Images/QC_metrics_violin_before_vs_after_filtering.png</pics>
+<p2>图. 质控前（上图）后（下图）细胞统计数据小提琴图。nFeature_RNA：单细胞的基因数；nCount_RNA：UMI序列数；percent.mt：来自线粒体基因的UMI序列比例。横坐标为样本。</p2>
+
+<span><br></span>
+<p1>过滤前后每个细胞的基因数量（nFeature_RNA）、UMI 数量（nCount_RNA）、线粒体基因所占比例（percent.mito）的结果展示如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/03.Cell_QC/Cell_Quality_Images/*_umap.png</pics>
+<p2>图. 质控后细胞特征统计数据散点图。nFeature_RNA：单细胞的基因数；nCount_RNA：UMI序列数；percent.mt：来自线粒体基因的UMI序列比例。</p2>
+
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+各样本细胞质控结果统计表(sheet 1)	= SCGES_*/03.Cell_QC/QC_cell_counts_per_step.xlsx;
+质控前细胞统计数据小提琴图			= SCGES_*/03.Cell_QC/Cell_Quality_Images/QC_metrics_violin_before_vs_after_filtering.png;
+质控后细胞特征统计数据散点图			= SCGES_*/03.Cell_QC/Cell_Quality_Images/*_umap.png;
+'</get>

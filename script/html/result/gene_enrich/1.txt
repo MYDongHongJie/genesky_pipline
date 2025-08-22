@@ -1,0 +1,42 @@
+<t2>GO富集分析</t2>
+<p1>选取ANOVA方差分析得到的差异基因，采用Cluster Profiler软件分析基因在GO上的富集情况。其它差异分析方法类同。
+</p1>
+<p1>GO富集结果如下：
+</p1>
+<p2>表. GO富集结果统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Gene_Enrich/*/anova/Gene_Enrich_Summary.xlsx -s 2 --scroll</get>
+<span><br></span>
+<p1>表格标题说明：
+</p1>
+<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Gene_Enrich/*/anova/Gene_Enrich_Summary.xlsx -s 'README GO'</get>
+
+<span><br></span>
+<p1>GO富集统计柱状图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Gene_Enrich/*/anova/Custom_Figures/go_barplot.pdf</pics>
+<p2>图. GO富集统计柱状图。横坐标为基因数量。</p2>
+
+<span><br></span>
+<p1>GO富集统计树状图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Gene_Enrich/*/anova/Custom_Figures/go_bp.pdf</pics>
+<p2>图. GO富集BP统计树状图。横坐标为基因数量。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Gene_Enrich/*/anova/Custom_Figures/go_cc.pdf</pics>
+<p2>图. GO富集CC统计树状图。横坐标为基因数量。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Gene_Enrich/*/anova/Custom_Figures/go_mf.pdf</pics>
+<p2>图. GO富集MF统计树状图。横坐标为基因数量。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+GO富集结果统计表	= SCGES_*/Statistical_Analysis/D_GROUP/*.Gene_Enrich/*/anova/Gene_Enrich_Summary.xlsx;
+GO富集统计柱状图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Gene_Enrich/*/anova/Custom_Figures/go_barplot.pdf;
+GO富集BP统计树状图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Gene_Enrich/*/anova/Custom_Figures/go_bp.pdf;
+GO富集CC统计树状图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Gene_Enrich/*/anova/Custom_Figures/go_cc.pdf;
+GO富集MF统计树状图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Gene_Enrich/*/anova/Custom_Figures/go_mf.pdf;
+'</get>

@@ -1,0 +1,21 @@
+<t2>上海昊为泰生物科技有限公司简介</t2>
+<p1>上海昊为泰生物科技有限公司，2024年10月创建于中国上海，前身为上海天昊生物科技有限公司科研服务板块，
+是由江苏康为世纪生物科技股份有限公司及上海天昊生物科技有限公司共同持股的一家全新子公司。昊为泰生物延续天昊生物在科研领域的优势地位，
+建立了整套完备的实验室管理体系和标准流程，为国内外基因生物领域科研机构、医学院校以及生物制药企业提供精确、高效的基因检测分析服务。
+</p1>
+<p1>昊为泰生物秉承天昊生物一贯的研发优势，拥有多项具有国际水平的专利技术，包括多种SNP分型和拷贝数检测技术、微生物16S扩增子绝对定量技术等。同时利用专利自主研发的
+AccuCopy<sup style='font-size:20px'>&reg;</sup>、
+CNVplex<sup style='font-size:20px'>&reg;</sup>、
+SNPscan<sup style='font-size:20px'>&reg;</sup>、
+iMLDR<sup style='font-size:20px'>&reg;</sup>、
+EasyTarget<sup style='font-size:20px'>&reg;</sup>、
+FastTarget<sup style='font-size:20px'>&reg;</sup>、
+SNPseq<sup style='font-size:20px'>&reg;</sup>、
+CNVseq<sup style='font-size:20px'>&reg;</sup>、
+MethylTarget<sup style='font-size:20px'>&reg;</sup>
+和SSRseq<sup style='font-size:20px'>&reg;</sup>
+等全新技术产品为客户提供灵活定制科研项目检测服务。
+</p1>
+<p1>昊为泰生物借助长期从事基因及遗传分析的领域专家构成的专家咨询团队，结合准确、高效、极具技术优势的科研技术服务体系，
+长期致力于为分子生物学及医学遗传学领域的研究者提供高质量的科研策略咨询、实验技术服务和遗传数据分析，协助广大科研人员获得更为优质的科研成果。
+</p1>

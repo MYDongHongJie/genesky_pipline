@@ -1,0 +1,12 @@
+<t2>基因表达分析</t2>
+<span><br></span>
+<p1>各个通路的显著基因结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Gene_Violin/*_gene_violin.png</pics>
+<p2>图. 显著基因表达分布图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+显著基因表达分布图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Gene_Violin/*_gene_violin.png;
+'</get>

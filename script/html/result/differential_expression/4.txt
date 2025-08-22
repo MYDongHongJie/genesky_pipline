@@ -1,0 +1,29 @@
+<t2>DEseq2差异分析</t2>
+<p1>使用R函数DEseq2(size factors 1)计算两分组差异，仅支持2组间的差异分析。如果分组数量超过2则会排列组合给出所有两两间的结果。
+</p1>
+
+<p1>DEseq2差异分析结果如下：
+</p1>
+<p2>表. DEseq2差异分析统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*Differential_Gene_Expression/*/deseq2/*/Differential_Gene_Summary.xlsx -s 1 --scroll</get>
+<span><br></span>
+<p1>表格标题说明：
+</p1>
+<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*Differential_Gene_Expression/*/deseq2/*/Differential_Gene_Summary.xlsx -s README</get>
+
+<span><br></span>
+<p1>各个分类（仅展示1个）分组差异箱体图如下：</p1>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*Differential_Gene_Expression/*/deseq2/*/boxplot.png</pics>
+<p2>图. 分组差异箱体图。</p2>
+
+<span><br></span>
+<p1>各个分类（仅展示1个）分组差异热图如下：</p1>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*Differential_Gene_Expression/*/deseq2/*/heatmap.png</pics>
+<p2>图. 分组差异热图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+DEseq2差异分析统计表	= SCGES_*/Statistical_Analysis/D_GROUP/*Differential_Gene_Expression/*/deseq2/*/Differential_Gene_Summary.xlsx;
+分组差异箱体图			= SCGES_*/Statistical_Analysis/D_GROUP/*Differential_Gene_Expression/*/deseq2/*/boxplot.png;
+分组差异热图			= SCGES_*/Statistical_Analysis/D_GROUP/*Differential_Gene_Expression/*/deseq2/*/heatmap.png;
+'</get>

@@ -1,0 +1,11 @@
+<t2>基因表达量分布</t2>
+<p1>基因在细胞排序的表达量分布结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/Gene_Images/*.pdf</pics>
+<p2>图. 基因在细胞排序的表达量分布结果。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+基因在细胞排序的表达量分布结果	= SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/Gene_Images/*.pdf;
+'</get>

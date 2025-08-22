@@ -1,0 +1,33 @@
+<t1>细胞类型注释</t1>
+<p1>采用SingleR软件（仅支持人和小鼠的部分组织，其它物种需人工注释）注释细胞类型，软件通过比较各个细胞与参考数据库的基因表达谱，将细胞注释为最相似的类型。
+Cluster中的细胞可能注释到多种细胞类型，取其中比例最高的细胞类型作为Cluster的细胞类型。另外，软件注释的细胞类型仅供参考，后续仍需要通过已知的基因marker来验证细胞类型的准确性。
+</p1>
+<p1>细胞类型分析结果如下：
+</p1>
+<p2>表. 细胞类型分析结果统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/*.SingleR/SingleR_anno.meta.xlsx -s 1 -ml 20 --scroll</get>
+<span><br></span>
+<p1>表格标题说明：
+</p1>
+<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/*.SingleR/SingleR_anno.meta.xlsx -s README</get>
+
+<span><br></span>
+<p1>细胞类型UMAP图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.SingleR/compare_clusters.anno.png</pics>
+<p2>图. 细胞类型UMAP图。</p2>
+
+<span><br></span>
+<p1>细胞类型鉴定相关性热图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.SingleR/SingleR_clusters_anno.heatmap.png</pics>
+<p2>图. 样本细胞类型数量柱状图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+细胞类型分析结果统计表		= SCGES_*/*.SingleR/SingleR_anno.meta.xlsx;
+细胞类型UMAP图				= SCGES_*/*.SingleR/compare_clusters.anno.png;
+细胞类型鉴定相关性热图		= SCGES_*/*.SingleR/SingleR_clusters_anno.heatmap.png;
+'</get>

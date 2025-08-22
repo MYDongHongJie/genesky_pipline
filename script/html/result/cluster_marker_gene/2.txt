@@ -1,0 +1,19 @@
+<t2>表达分布绘图</t2>
+<p1>默认提供每个Cluster的Top10的基因进行绘图。特征基因表达量分布图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Cluster_Marker_Gene/Each_seurat_clusters_marker/seurat_clusters_*/*_top10_umap.png</pics>
+<p2>图. 特征基因表达量分布图。</p2>
+
+<span><br></span>
+<p1>特征基因表达量小提琴图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Cluster_Marker_Gene/Each_seurat_clusters_marker/*_top10_vlnplot.png</pics>
+<p2>图. 特征基因表达量小提琴图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+特征基因表达量分布图	= SCGES_*/*.Cluster_Marker_Gene/seurat_clusters_*/*_feature.png;
+特征基因表达量小提琴图	= SCGES_*/*.Cluster_Marker_Gene/seurat_clusters_*/*_top10_vlnplot.png;
+'</get>

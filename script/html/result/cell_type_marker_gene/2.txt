@@ -1,0 +1,19 @@
+<t2>表达分布绘图</t2>
+<p1>默认提供每个细胞类型Top10的基因进行绘图。特征基因表达量分布图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Type_Marker_Gene/Gene_Images/*_feature.png</pics>
+<p2>图. 特征基因表达量分布图。</p2>
+
+<span><br></span>
+<p1>特征基因表达量小提琴图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Type_Marker_Gene/Gene_Images/*_vln.png</pics>
+<p2>图. 特征基因表达量小提琴图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+特征基因表达量分布图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Type_Marker_Gene/Gene_Images/*_feature.png;
+特征基因表达量小提琴图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Type_Marker_Gene/Gene_Images/*_vln.png;
+'</get>

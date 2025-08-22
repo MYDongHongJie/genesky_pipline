@@ -1,0 +1,17 @@
+<t2>相似性分析</t2>
+<span><br></span>
+<p1>相似性分析主要对功能（functional）和结构（structural）进行分析：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Similarity_Images/similarity_functional.png</pics>
+<p2>图. 功能相似度分组聚类图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Similarity_Images/similarity_structural.png</pics>
+<p2>图. 结构相似度分组聚类图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+功能相似度分组聚类图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Similarity_Images/similarity_functional.png;
+结构相似度分组聚类图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Similarity_Images/similarity_structural.png;
+'</get>

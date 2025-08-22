@@ -1,0 +1,5 @@
+{
+	"human": {"10X_dir":"","mobi_dir":"/PERSONALBIO/work/singlecell/s00/software/2.Genome/Mobivision/GRCh38_gencode","huadaC4_dir":"/home/pub/singlecell_ref/huadaC4/human","huadaSAW_dir":"","desc":"","mito":"/home/pub/singlecell_ref/MT_load/human/hsa.txt","cycle":""},
+	"mouse":{"10X_dir":"","mobi_dir":"","huadaC4_dir":"/home/pub/singlecell_ref/huadaC4/mouse","huadaSAW_dir":"","desc":"","mito":"/home/pub/singlecell_ref/MT_load/mouse/mmu.txt","cycle":""},
+	"Nipponia":{"10X_dir":"/home/pub/output3/10X/25D0716B/Nipponia"}
+}

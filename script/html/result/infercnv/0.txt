@@ -1,0 +1,30 @@
+<t1>拷贝数InferCNV分析</t1>
+<p1>通过inferCNV软件分析基因在各个细胞类型是否存在CNV。
+</p1>
+<p1>合并区域CNV分析结果如下：
+</p1>
+<p2>表. 合并区域CNV分析结果统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.CNV_InferCNV/CNV_InferCNV_Summary.xlsx -s 1</get>
+<span><br></span>
+
+<p2>表. 基因区域CNV分析结果统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.CNV_InferCNV/CNV_InferCNV_Summary.xlsx -s 2</get>
+<span><br></span>
+
+<p1>表格标题说明：
+</p1>
+<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.CNV_InferCNV/CNV_InferCNV_Summary.xlsx -s README</get>
+
+<span><br></span>
+<p1>各个染色体CNV分布结果如下：
+</p1>
+<span><br></span>
+<pic>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.CNV_InferCNV/infercnv.png</pic>
+<p2>图. 各个染色体CNV分布图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+合并区域CNV分析结果统计表(sheet 1)	= SCGES_*/Statistical_Analysis/D_GROUP/*.CNV_InferCNV/CNV_InferCNV_Summary.xlsx;
+基因区域CNV分析结果统计表(sheet 2)	= SCGES_*/Statistical_Analysis/D_GROUP/*.CNV_InferCNV/CNV_InferCNV_Summary.xlsx;
+各个染色体CNV分布图					= SCGES_*/Statistical_Analysis/D_GROUP/*.CNV_InferCNV/infercnv.png;
+'</get>

@@ -1,0 +1,14 @@
+<t2>细胞Barcode分析</t2>
+<p1>采用10x Genomics官方软件Cell Ranger对原始测序数据进行分析。软件会提取R1端序列中的细胞Barcode信息，并将R2端序列比对到参考基因组，分析每个细胞中基因的表达情况。
+</p1>
+<p1>软件提供Html格式的细胞Barcode分析结果：
+</p1>
+
+<span><br></span>
+<ifr>SCGES_*/*.CellRanger/CellRanger_Html/*.html</ifr>
+<span><br></span>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+细胞Barcode分析Html报告	= SCGES_*/*.CellRanger/CellRanger_Html/*.html;
+'</get>

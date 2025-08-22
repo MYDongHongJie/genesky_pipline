@@ -1,0 +1,48 @@
+<t1>实验结果快速导航</t1>
+<table border=0 style='margin:auto;text-align:left;width:80%;'>
+<tr><td style='background-color:#d6e3bc;border-top:2px #000000 solid;padding:8px'>本次实验获得的细胞质量如何？</td></tr>
+<tr><td style='padding:8px'>
+	每个样本的测序下机数据结果见本报告<a href='#goto-5'>【序列质控】</a>(注：下机数据中R1端会测到polyT导致后续碱基的测序质量快速下降，这是正常的而且不会影响后续分析)。
+	<br>
+	每个样本的细胞识别和定量结果见本报告<a href='#goto-6'>【CellRanger分析】</a>。
+</td></tr>
+
+
+<tr><td style='background-color:#d6e3bc;padding:8px'>本次实验的数据分析内容有哪些？</td></tr>
+<tr><td style='padding:8px'>
+	见本报告<a href='#goto-3.5'>【数据分析流程】</a>。
+</td></tr>
+
+
+<tr><td style='background-color:#d6e3bc;padding:8px'>本次实验获得了哪些细胞？</td></tr>
+<tr><td style='padding:8px'>
+	细胞降维聚类结果见本报告<a href='#goto-8'>【降维聚类】</a>，
+	细胞类型注释结果见本报告<a href='#goto-10'>【细胞类型注释】</a>。
+</td></tr>
+
+
+<tr><td style='background-color:#d6e3bc;padding:8px'>如何找到关键基因？</td></tr>
+<tr><td style='padding:8px'>
+	找区分细胞类型的特征基因见本报告<a href='#goto-9'>【Cluster标记基因分析】</a>和<a href='#goto-13'>【Cell_Type标记基因分析】</a>，
+	找分组间差异基因见本报告<a href='#goto-15'>【组间差异分析】</a>，
+	基因在功能层面的富集分析结果见本报告<a href='#goto-115'>【基因富集分析(ANOVA)】</a>和<a href='#goto-16'>【基因富集GSEA分析】</a>。
+</td></tr>
+
+
+<tr><td style='background-color:#d6e3bc;padding:8px'>本次实验还有哪些分析？</td></tr>
+<tr><td style='padding:8px'>
+	<a href='#goto-17'>【拟时轨迹Monocle分析】</a>，
+	<a href='#goto-18'>【拷贝数InferCNV分析】</a>，
+	<a href='#goto-19'>【细胞通讯CellChat分析】</a>，
+	<a href='#goto-20'>【差异细胞通讯CellChat分析】</a>，
+	<a href='#goto-21'>【RNA速率scVelo分析】</a>，
+	<a href='#goto-22'>【转录调控SCENIC分析】</a>。
+</td></tr>
+
+
+<tr><td style='background-color:#d6e3bc;padding:8px'>本次实验获得的result文件夹都包含了什么数据？</td></tr>
+<tr><td style='padding:8px;border-bottom:2px #000000 solid;'>
+	Result文件夹的详细结果列表见<a href='#goto-103.1'>【结果文件目录列表】</a>
+	。
+</td></tr>
+</table>

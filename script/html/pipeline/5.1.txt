@@ -1,0 +1,4 @@
+<t2>分析流程图</t2>
+<p1>标准分析</p1>
+<upic>/D_TEMP/picture/bioinfo_pipe.png</upic>
+<p2>图. 单细胞转录组测序(10x Genomics)数据分析流程图。</p2>

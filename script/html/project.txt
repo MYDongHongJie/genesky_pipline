@@ -1,0 +1,3 @@
+<t1>项目信息</t1>
+<upic style='display:none'>/D_TEMP/picture/sign.png</upic>
+<get>perl /D_TEMP/get/project_detail.pl /D_REPORT/html/project/project.txt</get>

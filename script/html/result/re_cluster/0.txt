@@ -1,0 +1,27 @@
+<t1>分组重聚类</t1>
+<p1>选择部分细胞、部分样本或使用新的聚类参数进行二次聚类。重聚类通常用于细胞亚型的分析；如不需要二次聚类，本步骤的结果将和之前的聚类结果保持一致。
+</p1>
+<p1>按Clusters绘制UMAP降维聚类结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Re_Cluster/*/clusters_umap.png</pics>
+<p2>图. Clusters分类UMAP降维聚类结果图。</p2>
+
+<p1>按样本绘制UMAP降维聚类结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Re_Cluster/*/sample_umap.png</pics>
+<p2>图. 样本分类UMAP降维聚类结果图。</p2>
+
+<p1>按细胞类型绘制UMAP降维聚类结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Re_Cluster/*/cell_type_umap.png</pics>
+<p2>图. 细胞类型分类UMAP降维聚类结果图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+Clusters分类UMAP降维聚类结果图	= SCGES_*/*.Re_Cluster/*/clusters_umap.png;
+样本分类UMAP降维聚类结果图		= SCGES_*/*.Re_Cluster/*/sample_umap.png;
+细胞类型分类UMAP降维聚类结果图	= SCGES_*/*.Re_Cluster/*/cell_type_umap.png;
+'</get>

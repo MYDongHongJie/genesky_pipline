@@ -1,0 +1,14 @@
+<t2>差异基因选取</t2>
+<p1>通过计算基因在所有细胞中的平均表达量（Average Expression）和标准方差（Standardized Varience），挑选出2000个差异基因。 
+这些基因仅用于减少后续降维聚类（PCA）分析的工作量，不会影响其它分析。
+</p1>
+<p1>差异基因筛选结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/03.Cell_QC/Cell_Quality_Images/variable_feature.png</pics>
+<p2>图. 差异基因筛选统计图。红色标记为差异基因。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+差异基因筛选统计图	= SCGES_*/03.Cell_QC/Cell_Quality_Images/variable_feature.png;
+'</get>

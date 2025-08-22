@@ -1,0 +1,90 @@
+<t1>细胞类型重注释</t1>
+<p1>本步骤是细胞类型的最终确定版本，之后的所有分析都使用本步骤的结果运行。
+</p1>
+<p1>细胞类型分析结果如下：
+</p1>
+<p2>表. 细胞类型分析结果统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/Re_Cell_Type_Summary.xlsx -s 1 -ml 20 --scroll</get>
+<span><br></span>
+<p1>表格标题说明：
+</p1>
+<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/Re_Cell_Type_Summary.xlsx -s README</get>
+
+<p1>按Clusters绘制降维聚类结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/clusters.png</pics>
+<p2>图. Clusters分类降维聚类结果图。</p2>
+
+<p1>按样本绘制降维聚类结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/sample.png</pics>
+<p2>图. 样本分类降维聚类结果图。</p2>
+
+<p1>按分组绘制降维聚类结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/group.png</pics>
+<p2>图. 分组分类降维聚类结果图。</p2>
+
+<p1>按细胞类型绘制降维聚类结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/cell_type.png</pics>
+<p2>图. 细胞类型分类降维聚类结果图。</p2>
+
+<p1>按样本拆分绘制降维聚类结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/Sample_Images/*.png</pics>
+<p2>图. 各样本降维聚类结果图。</p2>
+
+<span><br></span>
+<p1>样本细胞类型数量柱状图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/cell_type_barplot_sample.png</pics>
+<p2>图. 样本细胞类型数量柱状图。</p2>
+
+<span><br></span>
+<p1>样本细胞类型百分比柱状图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/cell_type_barplot_sample_percent.png</pics>
+<p2>图. 样本细胞类型百分比柱状图。</p2>
+
+<p1>按分组拆分绘制降维聚类结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/Group_Images/*.png</pics>
+<p2>图. 各分组降维聚类结果图。</p2>
+
+<span><br></span>
+<p1>分组细胞类型数量柱状图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/cell_type_barplot_group.png</pics>
+<p2>图. 分组细胞类型数量柱状图。</p2>
+
+<span><br></span>
+<p1>分组细胞类型百分比柱状图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/cell_type_barplot_group_percent.png</pics>
+<p2>图. 分组细胞类型百分比柱状图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+细胞类型分析结果统计表		= SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/Re_Cell_Type_Summary.xlsx;
+Clusters分类降维聚类结果图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/clusters.png;
+样本分类降维聚类结果图		= SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/sample.png;
+分组分类降维聚类结果图		= SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/group.png;
+细胞类型分类降维聚类结果图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/cell_type.png;
+各样本降维聚类结果图		= SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/Sample_Images/*.png;
+样本细胞类型数量柱状图		= SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/cell_type_barplot_sample.png;
+样本细胞类型百分比柱状图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/cell_type_barplot_sample_percent.png;
+各分组降维聚类结果图		= SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/Group_Images/*.png;
+分组细胞类型数量柱状图		= SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/cell_type_barplot_group.png;
+分组细胞类型百分比柱状图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Re_Cell_Type/cell_type_barplot_group_percent.png;
+'</get>

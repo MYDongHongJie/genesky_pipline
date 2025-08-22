@@ -1,0 +1,2 @@
+<t2>结果文件目录列表</t2>
+<get>perl /D_SCRIPT/tools/file_list.pl -d /D_REPORT/ -a /D_REPORT/html/project/log.txt</get>

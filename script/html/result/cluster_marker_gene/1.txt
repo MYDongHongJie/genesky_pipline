@@ -1,0 +1,54 @@
+<t2>特征基因分析</t2>
+<p1>通过计算基因在一种细胞类型中的表达量与在剩下所有细胞表达量的差异倍数和wilcox检验P值，选择各个细胞类型的特征基因。
+</p1>
+<p1>特征基因分析结果如下：
+</p1>
+<p2>表. 特征基因分析结果统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/*.Cluster_Marker_Gene/allmarkers.xlsx -s 1 -ml 20 --scroll</get>
+<span><br></span>
+<p1>表格标题说明：
+</p1>
+<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/*.Cluster_Marker_Gene/allmarkers.xlsx -s README</get>
+
+<span><br></span>
+<p1>各cluster的特征基因数目统计结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Cluster_Marker_Gene/marker_number.png</pics>
+<p2>图. 各cluster特征基因数量柱状图。不同颜色代表不同cluster，每个柱形上的数字代表该cluster经算法发现的特征基因基因数量。</p2>
+
+
+<span><br></span>
+<p1>特征基因基于细胞水平表达量热图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Cluster_Marker_Gene/cluster_top10_markers_heatmap.png</pics>
+<p2>图. Top10 特征基因基于细胞水平表达热图。横坐标为细胞群，纵坐标为特征基因，图中红色表示高表达，蓝色表示低表达。</p2>
+
+
+<span><br></span>
+<p1>特征基因基于cluster水平的平均表达量热图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Cluster_Marker_Gene/cluster_top30_markers_avg_heatmap.png</pics>
+<p2>图. Top30 特征基因基于cluster水平的平均表达量热图。横坐标为细胞群，纵坐标为特征基因，图中红色表示高表达，蓝色表示低表达。</p2>
+
+
+
+<span><br></span>
+<p1>特征基因表达量气泡图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Cluster_Marker_Gene/cluster_top5_dotplot.png</pics>
+<p2>图. Top5 特征基因表达量气泡图。横坐标为特征基因，纵坐标为Cluster,气泡颜色代表表达高低，大小代表表达比例。</p2>
+
+
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+特征基因分析结果统计表	= SCGES_*/*.Cluster_Marker_Gene/allmarkers.xlsx;
+各cluster特征基因数量柱状图		= SCGES_*/*.Cluster_Marker_Gene/marker_number.png;
+Top10 特征基因基于细胞水平表达热图	= SCGES_*/*.Cluster_Marker_Gene/cluster_top10_markers_heatmap.png;
+Top30 特征基因基于cluster水平的平均表达量热图 = SCGES_*/*.Cluster_Marker_Gene/cluster_top30_markers_avg_heatmap.png;
+Top5 特征基因表达量气泡图		= SCGES_*/*.Cluster_Marker_Gene/cluster_top5_dotplot.png;
+'</get>

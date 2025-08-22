@@ -1,0 +1,34 @@
+<t2>质量数据绘图</t2>
+<span><br></span>
+<p1>质控前和质控后（final标签）的数据碱基质量分布图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Quality_Statistics/Quality_Images/*_r2_per_base_quality.png</pics>
+<p2>图. 质控前和质控后（final标签）的数据碱基质量分布图。仅展示R2序列。</p2>
+<p1>注：双端测序数据分开展示：横坐标为碱基位置，纵坐标为对应的碱基质量（以Q值表示）。
+</p1>
+
+<span><br></span>
+<p1>质控前和质控后（final标签）的测序错误率分布图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Quality_Statistics/Quality_Images/*_error_rate.png</pics>
+<p2>图. 质控前和质控后（final标签）的测序错误率分布图。</p2>
+<p1>注：双端测序数据合并展示：横坐标为碱基位置，纵坐标为对应的碱基质量（以错误率表示）。
+</p1>
+
+<span><br></span>
+<p1>质控前和质控后（final标签）的碱基组成分布图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Quality_Statistics/Quality_Images/*_base_content.png</pics>
+<p2>图. 质控前和质控后（final标签）的碱基组成分布图。</p2>
+<p1>注：横坐标为reads的碱基位置，纵坐标为单碱基所占的比例。不同颜色代表不同的碱基类型。
+</p1>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+数据碱基质量分布图	= SCGES_*/*.Quality_Statistics/Quality_Images/*_r2_per_base_quality.png;
+测序错误率分布图	= SCGES_*/*.Quality_Statistics/Quality_Images/*_error_rate.png;
+碱基组成分布图		= SCGES_*/*.Quality_Statistics/Quality_Images/*_base_content.png;
+'</get>

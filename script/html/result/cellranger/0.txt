@@ -1,0 +1,5 @@
+<t1>CellRanger分析</t1>
+<p1>该部分分析内容给出：</p1>
+<p3-30>√.&nbsp;&nbsp; 细胞Barcode分析 ；</p3-30>
+<p3-30>√.&nbsp;&nbsp; 分析结果统计 ；</p3-30>
+<p3-30>√.&nbsp;&nbsp; 合并样本 。</p3-30>

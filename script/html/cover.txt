@@ -1,0 +1,9 @@
+<img style='float:left' src='html/logo_description.png'></img>
+
+<span style='float:right;margin-top:10px;font-size:14px;color:#878686'>版本 v6.0.0</span>
+<div style='width:100%;height:400px;padding-top:200px;'>
+	<span style='font-size:48px;'>高通量单细胞RNA测序(10x Genomics)<br><br><br>标准项目报告</span>
+</div>
+<get>perl /D_TEMP/get/project_basic.pl /D_REPORT/html/project/project.txt</get>
+
+<img style='margin-top:150px;width:600px' src='html/qr_code.png'></img>

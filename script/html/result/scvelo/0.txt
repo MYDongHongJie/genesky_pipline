@@ -1,0 +1,111 @@
+<t1>RNA速率scVelo分析</t1>
+<p1>通过Velocyto+scVelo软件分析剪切和非剪切的RNA比例，预测各个细胞所处的状态。
+</p1>
+<p1>RNA速率分析结果如下：
+</p1>
+<p2>表. 细胞RNA速率分析结果统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/RNA_Velocity_Summary.xlsx -s 1 --scroll</get>
+<span><br></span>
+
+<p2>表. 分组显著基因结果统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/RNA_Velocity_Summary.xlsx -s 2</get>
+<span><br></span>
+
+<p2>表. 细胞类型显著基因结果统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/RNA_Velocity_Summary.xlsx -s 3</get>
+<span><br></span>
+
+<span><br></span>
+<p1>所有细胞的剪切和非剪切的RNA比例结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/proportions.pdf</pics>
+<p2>图. 所有细胞的剪切和非剪切的RNA比例分布图。</p2>
+
+<span><br></span>
+<p1>RNA速率流动方向图结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/velocity_embedding_stream_*.png</pics>
+<p2>图. RNA速率流动方向图。</p2>
+
+<span><br></span>
+<p1>RNA速率流动箭头图结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/velocity_embedding_*.pdf</pics>
+<p2>图. RNA速率流动箭头图。</p2>
+
+<span><br></span>
+<p1>细胞状态分值分布结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/scatter_score.pdf</pics>
+<p2>图. 细胞状态分值分布图。</p2>
+
+<span><br></span>
+<p1>速度和连贯性分布表结果如下：
+</p1>
+<span><br></span>
+<ifr>SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/background_gradient.html</ifr>
+<p2>表. 速度和连贯性分布表。</p2>
+
+<span><br></span>
+<p1>速度和连贯性分布图结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/scatter_velocity.pdf</pics>
+<p2>图. 速度和连贯性分布图。</p2>
+
+<span><br></span>
+<p1>细胞间联系和转换关系图结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/velocity_graph.pdf</pics>
+<p2>图. 细胞间联系和转换关系图。</p2>
+
+<span><br></span>
+<p1>细胞间联系和转换关系拟时结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/velocity_pseudotime.pdf</pics>
+<p2>图. 细胞间联系和转换关系拟时分布图。</p2>
+
+<span><br></span>
+<p1>PAGA网络分析结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/velocity_paga.pdf</pics>
+<p2>图. PAGA网络分析图。</p2>
+
+<span><br></span>
+<p1>显著基因RNA速率分布结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Gene_Images/*_velocity.pdf</pics>
+<p2>图. 显著基因RNA速率分布图。</p2>
+
+<span><br></span>
+<p1>显著基因RNA速率分布散点图结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Gene_Images/*_scatter.pdf</pics>
+<p2>图. 显著基因RNA速率分布散点图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+细胞RNA速率分析结果统计表(sheet 1)					= SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/RNA_Velocity_Summary.xlsx;
+分组显著基因结果统计表(sheet 2)						= SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/RNA_Velocity_Summary.xlsx;
+细胞类型显著基因结果统计表(sheet 3)					= SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/RNA_Velocity_Summary.xlsx;
+所有细胞的剪切和非剪切的RNA比例分布图				= SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/proportions.pdf;
+RNA速率流动方向图									= SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/velocity_embedding_stream_*.png;
+RNA速率流动箭头图									= SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/velocity_embedding_*.pdf;
+细胞状态分值分布图									= SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/scatter_score.pdf;
+速度和连贯性分布表									= SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/background_gradient.html;
+速度和连贯性分布图									= SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/scatter_velocity.pdf;
+细胞间联系和转换关系图								= SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/velocity_graph.pdf;
+细胞间联系和转换关系拟时分布图						= SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/velocity_pseudotime.pdf;
+PAGA网络分析图										= SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Velocity_Images/velocity_paga.pdf;
+显著基因RNA速率分布图								= SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Gene_Images/*_velocity.pdf;
+显著基因RNA速率分布散点图							= SCGES_*/Statistical_Analysis/D_GROUP/*.RNA_Velocity_scVelo/Gene_Images/*_scatter.pdf;
+'</get>

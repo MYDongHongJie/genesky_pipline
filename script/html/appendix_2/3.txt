@@ -1,0 +1,4 @@
+<t2>论文引用或致谢</t2>
+<p1>如果您认可我们的工作，在发表文章时愿意将我们放到致谢名单中，我们将非常感谢，文章中昊为泰的中英文名称如下：</p1>
+<p1 style='font-weight:bold'>上海昊为泰生物科技有限公司（中文）</p1>
+<p1 style='font-weight:bold'>Shanghai G&C Biotechnology Co., Ltd.(English)</p1>

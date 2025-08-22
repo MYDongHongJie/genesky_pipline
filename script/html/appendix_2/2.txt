@@ -1,0 +1,18 @@
+<t2>权责声明</t2>
+<div style='text-align:left;width:100%;margin-top:20px;margin-bottom:20px;'><strong>第1条</strong></div>
+<p1>本报告及其附件中披露的由上海昊为泰生物科技有限公司负责设计优化的检测体系（合同中对权利归属已做说明的除外）的知识产权归上海昊为泰生物科技有限公司（以下简称公司）所有，
+任何其它单位及个人未经公司许可不得对其进行专利申请或用于商业用途。上述检测体系包括设计合成的各种核酸序列、检测反应组成、反应条件及检测流程等。
+</p1>
+
+<div style='text-align:left;width:100%;margin-top:20px;margin-bottom:20px;'><strong>第2条</strong></div>
+<p1>本报告及其附件中披露的项目内容、实验数据及结果，公司必须严格保密，未经客户单位负责人允许，严谨公司任何人对外宣传。</p1>
+
+<div style='text-align:left;width:100%;margin-top:20px;margin-bottom:20px;'><strong>第3条</strong></div>
+<p1>为了保证项目成果的安全，本报告及其附件中披露的实验数据及结果已通过邮件发送，而本报告及其附件中披露的实验及数据分析相关信息、
+原始实验数据则需客户单位的项目负责人或其联系人通过公司授权的帐号在公司项目管理系统中下载。
+</p1>
+
+<div style='text-align:left;width:100%;margin-top:20px;margin-bottom:20px;'><strong>第4条</strong></div>
+<p1>本报告及其附件内容仅限于项目团队成员、客户单位的项目负责人及其联系人查阅或拷贝，公司内任何其他人员未经项目总监允许不得查阅或拷贝，
+公司外任何其他人员未经客户单位的项目负责人许可不可查阅或拷贝。
+</p1>

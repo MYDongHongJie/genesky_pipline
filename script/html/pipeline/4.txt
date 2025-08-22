@@ -1,0 +1,42 @@
+<t2>实验步骤</t2>
+<p1><strong>！以下实验步骤为标准步骤说明，限于理解实验过程。</strong></p1>
+
+<p1><strong>1)&nbsp;&nbsp;单细胞计数 (Cell Number Quantification)</strong></p1>
+<p3-30>选用合适的方法对样本进行单细胞分离，分散良好、细胞活性高、计数准确的单细胞是获得良好实验结果的前提，我们对单细胞样本有以下要求：
+</p3-30>
+<p3-30>a.&nbsp;&nbsp;样品类型：单细胞悬液，缓冲液不含Ca<sup>2+</sup>和Mg<sup>2+</sup>；</p3-30>
+<p3-30>b.&nbsp;&nbsp;样本状态：细胞直径<40 μm，细胞活性>90%，镜检无可见细胞成团或杂质；</p3-30>
+<p3-30>c.&nbsp;&nbsp;样品需求量：细胞数目≥ 1×10<sup>5</sup> cells/sample；细胞浓度5×10<sup>5</sup>~1.2×10<sup>6</sup>/mL。</p3-30>
+<span><br></span>
+
+<p1><strong>2)&nbsp;&nbsp;单细胞GEM生成 (GEM Generation)</strong></p1>
+<p3-30>在Chip G single Cell芯片上，分别加入适量细胞(通常为2000-10000个)和逆转录试剂的混合物、带有10x barcode的Single Cell 3' Gel Bead、以及Partitioning Oil，
+放入10x Genomics Chromium<sup>TM</sup> Single Cell Controller仪器，运行程序完成GEM (Gel Bead-In-EMulsions) 的生成，每个GEM为一个油包水的液滴，
+典型的GEM中包含一个Single Cell 3' Gel Bead和一个单细胞，以及逆转录试剂，逆转录过程在GEM内完成。
+</p3-30>
+<span><br></span>
+
+<p1><strong>3)&nbsp;&nbsp;逆转录 (Reverse Transcription)</strong></p1>
+<p3-30>将形成的GEM从芯片转移到PCR管中，运行逆转录程序，生成cDNA。每个单细胞中的cDNA均带有相同的10x barcode，而不同的细胞10x barcode则各不相同。
+</p3-30>
+<span><br></span>
+
+<p1><strong>4)&nbsp;&nbsp;cDNA扩增 (cDNA Amplification)</strong></p1>
+<p3-30>将GEM打破，释放带有10x barcode标记的cDNA，并进行纯化和cDNA扩增，扩增后的cDNA使用Agilent 2100 Bioanalyzer 检测产物的片段长度分布，通常在500-5000bp范围。
+</p3-30>
+<span><br></span>
+
+<p1><strong>5)&nbsp;&nbsp;文库构建 (Library Construction)</strong></p1>
+<p3-30>依次对cDNA扩增产物进行片段化、末端补齐、加A尾、片段大小分选和连接接头，并通过PCR加入完整的文库测序接头，得到测序文库。
+</p3-30>
+<span><br></span>
+
+<p1><strong>6)&nbsp;&nbsp;文库的质量检测 (Library Quality Check)</strong></p1>
+<p3-30>使用Qubit和Agilent 2100 Bioanalyzer 分别检测文库浓度与文库片段长度分布。要求浓度>10ng/μL，且片段长度集中在350-500 bp之间。
+</p3-30>
+<span><br></span>
+
+<p1><strong>7)&nbsp;&nbsp;上机测序 (Sequencing)</strong></p1>
+<p3-30>文库最终于Illumina平台，以2×150 bp双端测序模式进行高通量测序，获得FastQ数据。
+</p3-30>
+<span><br></span>

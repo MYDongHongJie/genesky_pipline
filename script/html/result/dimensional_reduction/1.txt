@@ -1,0 +1,14 @@
+<t2>PCA特征选取</t2>
+<p1>采用PCA方法计算细胞之间的相似性，样本距离越近表示细胞基因的表达趋势越接近，系统会自动判断最合适的特征数。
+</p1>
+<p1>各特征标准差分布图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Dimensional_Reduction/PCA_ElbowPlot.png</pics>
+<p2>图. 各特征标准差分布图。</p2>
+
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+各特征标准差分布图		= SCGES_*/*.Dimensional_Reduction/PCA_ElbowPlot.png;
+'</get>

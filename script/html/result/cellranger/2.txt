@@ -1,0 +1,14 @@
+<t2>分析结果统计</t2>
+<p1>细胞Barcode分析统计结果如下：
+</p1>
+<p2>表. 细胞Barcode分析结果统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/*.CellRanger/CellRanger_Summary.xlsx -s 1 -m 30 -ml 100 -sc 1,2..end:max=3</get>
+<span><br></span>
+<p1>表格标题说明：
+</p1>
+<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/*.CellRanger/CellRanger_Summary.xlsx -s README</get>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+细胞Barcode分析结果统计表	= SCGES_*/*.CellRanger/CellRanger_Summary.xlsx;
+'</get>

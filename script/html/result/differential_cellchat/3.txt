@@ -1,0 +1,24 @@
+<t2>相似性分析</t2>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Similarity_Images/diff_similarity_functional.png</pics>
+<p2>图. 分组功能相似度分组聚类图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Similarity_Images/diff_similarity_functional_rank.png</pics>
+<p2>图. 分组间通路功能相似度差异。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Similarity_Images/diff_similarity_structural.png</pics>
+<p2>图. 分组结构相似度分组聚类图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Similarity_Images/diff_similarity_structural_rank.png</pics>
+<p2>图. 分组间通路结构相似度差异。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+分组功能相似度分组聚类图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Similarity_Images/diff_similarity_functional.png;
+分组间通路功能相似度差异	= SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Similarity_Images/diff_similarity_functional_rank.png;
+分组结构相似度分组聚类图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Similarity_Images/diff_similarity_structural.png;
+分组间通路结构相似度差异	= SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Similarity_Images/diff_similarity_structural_rank.png;
+'</get>

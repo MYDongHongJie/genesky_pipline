@@ -1,0 +1,27 @@
+<t2>模式分析</t2>
+<span><br></span>
+<p1>模式分析给出incoming和outgoing模式的结果：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Pattern_Images/pattern_*_select_k.png</pics>
+<p2>图. 模式聚类分组测试图。最佳分组选择：从左到右依次选点，如果在某个点之后，Cophenetic值和Silhouette值都已经显著下降（如果其中一个值先降低，忽略之后的反弹依然认作已经下降），该点即为最佳分组。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Pattern_Images/pattern_*_river.png</pics>
+<p2>图. 通讯模式分组河流图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Pattern_Images/pattern_*_heatmap.png</pics>
+<p2>图. 通讯模式分组热图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Pattern_Images/pattern_*_dot.png</pics>
+<p2>图. 通讯模式各个细胞贡献度气泡图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+模式聚类分组测试图				= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Pattern_Images/pattern_*_select_k.png;
+通讯模式分组河流图				= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Pattern_Images/pattern_*_river.png;
+通讯模式分组热图				= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Pattern_Images/pattern_*_heatmap.png;
+通讯模式各个细胞贡献度气泡图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Communication_CellChat/*/Pattern_Images/pattern_*_dot.png;
+'</get>

@@ -1,0 +1,40 @@
+<t2>特征基因分析</t2>
+<p1>通过计算基因在一种细胞类型中的表达量与在剩下所有细胞表达量的差异倍数和wilcox检验P值，选择各个细胞类型的特征基因。
+</p1>
+<p1>特征基因分析结果如下：
+</p1>
+<p2>表. 特征基因分析结果统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Type_Marker_Gene/Marker_Gene_Summary.xlsx -s 1 -ml 20 --scroll</get>
+<span><br></span>
+<p1>表格标题说明：
+</p1>
+<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Type_Marker_Gene/Marker_Gene_Summary.xlsx -s README</get>
+
+<span><br></span>
+<p1>特征基因表达量热图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Type_Marker_Gene/DoHeatmap.png</pics>
+<p2>图. 特征基因表达量热图。仅展示TOP基因。</p2>
+
+<span><br></span>
+<p1>特征基因表达量气泡图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Type_Marker_Gene/DotPlot.png</pics>
+<p2>图. 特征基因表达量气泡图。仅展示TOP基因。</p2>
+
+<span><br></span>
+<p1>特征基因小提琴图如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Type_Marker_Gene/violin.png</pics>
+<p2>图. 特征基因小提琴图。仅展示TOP基因。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+特征基因分析结果统计表	= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Type_Marker_Gene/Marker_Gene_Summary.xlsx;
+特征基因表达量热图		= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Type_Marker_Gene/DoHeatmap.png;
+特征基因表达量气泡图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Type_Marker_Gene/DotPlot.png;
+特征基因小提琴图		= SCGES_*/Statistical_Analysis/D_GROUP/*.Cell_Type_Marker_Gene/violin.png;
+'</get>

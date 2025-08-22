@@ -1,0 +1,9 @@
+<t2>贡献度分析</t2>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Contribution_Images/diff_contribution_outgoing_incoming_scatter.png</pics>
+<p2>图. 分组间通讯模式占比分布图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+分组间通讯模式占比分布图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Contribution_Images/diff_contribution_outgoing_incoming_scatter.png;
+'</get>

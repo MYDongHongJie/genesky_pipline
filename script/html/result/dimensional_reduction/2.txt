@@ -1,0 +1,38 @@
+<t2>UMAP降维聚类</t2>
+<p1>基于Leiden算法对单细胞转录组数据进行细胞聚类分析，该算法通过优化模块度（modularity）将具有相似基因表达模式的细胞划分到同一亚群中。具体而言，首先构建细胞间的k近邻图（k-NN graph），然后利用Leiden算法对图结构进行社区检测，最终实现细胞分群，为直观展示聚类结果，采用UMAP的非线性降维方法进行可视化。
+</p1>
+<p1>按Clusters绘制UMAP降维聚类结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Dimensional_Reduction/umap/umap_reduction_groupby_seurat_clusters.png</pics>
+<p2>图. Clusters分类UMAP降维聚类结果图。</p2>
+
+<p1>按样本绘制UMAP降维聚类结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Dimensional_Reduction/umap/umap_reduction_groupby_sample.name.png</pics>
+<p2>图. 样本分类UMAP降维聚类结果图。</p2>
+
+<p1>按照样本和亚群展示Cluster占比差异柱状图结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Dimensional_Reduction/Cluster_Visualization/SummaryCluster_seurat_clusters_splitby_sample.name.png</pics>
+<p2>图. 样本中Cluster百分比柱状图。</p2>
+
+
+<p1>绘制添加密度等压线的UMAP图结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/*.Dimensional_Reduction/umap/umap_reduction_density_isobars_groupby_seurat_clusters.png</pics>
+<p2>图. 添加密度等压线的UMAP图。</p2>
+
+
+
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+Clusters分类UMAP降维聚类结果图	= SCGES_*/*.Dimensional_Reduction/umap/umap_reduction_groupby_seurat_clusters.png;
+样本分类UMAP降维聚类结果图		= SCGES_*/*.Dimensional_Reduction/umap/umap_reduction_groupby_sample.name.png;
+样本中Cluster百分比柱状图		= SCGES_*/*.Dimensional_Reduction/Cluster_Visualization/SummaryCluster_seurat_clusters_splitby_sample.name.png;
+添加密度等压线的UMAP图		= SCGES_*/*.Dimensional_Reduction/umap/umap_reduction_density_isobars_groupby_seurat_clusters.png;
+'</get>

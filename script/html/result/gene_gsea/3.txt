@@ -1,0 +1,15 @@
+<t2>GSEA统计绘图</t2>
+<p1>GSEA分析首先用2组间的Log2差异倍数对基因进行排序，高表达为正值，低表达为负值，没有差异为零。正负两端的基因在通路中越多结果越显著。
+</p1>
+
+<span><br></span>
+<p1>GSEA统计绘图结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Gene_GSEA/*/*/GSEA_Images/*.pdf</pics>
+<p2>图. GSEA统计绘图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+GSEA统计绘图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Gene_GSEA/*/*/GSEA_Images/*.pdf;
+'</get>

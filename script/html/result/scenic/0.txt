@@ -1,0 +1,54 @@
+<t1>转录调控SCENIC分析</t1>
+<p1>通过SCENIC软件建立转录因子预测模型，预测各个细胞的转录情况。
+</p1>
+<p1>转录调控SCENIC分析结果如下：
+</p1>
+<p2>表. 转录调控SCENIC分析结果统计表。</p2>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/Transcription_Factors_SCENIC_Summary.xlsx -s 1</get>
+<span><br></span>
+
+<span><br></span>
+<p1>各个细胞类型RSS值显著性分析结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/RankPlot_Images/RSS_rankplot.*.png</pics>
+<p2>图. 细胞类型RSS值排序分布图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/RSS_Images/dotplot.png</pics>
+<p2>图. 模型RSS值校气泡图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/RSS_Images/heatmap.png</pics>
+<p2>图. 模型RSS值热图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/RSS_Images/heatmap_scaled.png</pics>
+<p2>图. 模型RSS值校正热图。</p2>
+
+<span><br></span>
+<p1>各个细胞类型AUC值显著性分析结果如下：
+</p1>
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/AUC_Images/dotplot.png</pics>
+<p2>图. 模型AUC值气泡图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/AUC_Images/heatmap.png</pics>
+<p2>图. 模型AUC值热图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/AUC_Images/heatmap_scaled.png</pics>
+<p2>图. 模型AUC值校正热图。</p2>
+
+<span><br></span>
+<get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
+转录调控SCENIC分析结果统计表	= SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/Transcription_Factors_SCENIC_Summary.xlsx;
+细胞类型RSS值排序分布图			= SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/RankPlot_Images/RSS_rankplot.*.png;
+模型RSS值校气泡图				= SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/RSS_Images/dotplot.png;
+模型RSS值热图					= SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/RSS_Images/heatmap.png;
+模型RSS值校正热图				= SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/RSS_Images/heatmap_scaled.png;
+模型AUC值气泡图					= SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/AUC_Images/dotplot.png;
+模型AUC值热图					= SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/AUC_Images/heatmap.png;
+模型AUC值校正热图				= SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/AUC_Images/heatmap_scaled.png;
+'</get>
