@@ -11,15 +11,32 @@ rule fastqc_raw:
         r2_dir = directory(f"{result_output}/fataQC/{{sample}}/R2_fastqc"),
         log = f"log/{{sample}}_fastqc.log"
     threads: 10
+    priority: 100
     params:
         use_fastqc = config["software"]["fastqc"]
     shell:
         """
-        {params.use_fastqc} -t {threads} --extract -o {TMP_DIR} {input.r1} {input.r2} && \
-        mkdir -p {output.r1_dir} && cp -r {TMP_DIR}/{wildcards.sample}_R1_fastqc/* {output.r1_dir} && \
-        mkdir -p {output.r2_dir} && cp -r {TMP_DIR}/{wildcards.sample}_R2_fastqc/* {output.r2_dir} && \
+        {params.use_fastqc} -t {threads} --extract -o {TMP_DIR} {input.r1} {input.r2}
+
+        # 复制 R1 文件夹内容
+        mkdir -p {output.r1_dir}
+        for d in {TMP_DIR}/{wildcards.sample}_R1_fastqc {TMP_DIR}/{wildcards.sample}_cDNA_R1_fastqc; do
+            if [ -d "$d" ]; then
+                cp -r "$d"/* {output.r1_dir}/
+            fi
+        done
+
+        # 复制 R2 文件夹内容
+        mkdir -p {output.r2_dir}
+        for d in {TMP_DIR}/{wildcards.sample}_R2_fastqc {TMP_DIR}/{wildcards.sample}_cDNA_R2_fastqc; do
+            if [ -d "$d" ]; then
+                cp -r "$d"/* {output.r2_dir}/
+            fi
+        done
+
         echo 'fastqc done' > {output.log}
         """
+
 
 
 
@@ -37,6 +54,7 @@ rule fqchk_raw:
         log= f"log/{{sample}}_fqchk.log"
     params:
         use_seqtk = config["software"]["Seqtk"]
+    priority: 100
     shell:
         """
         {params.use_seqtk} fqchk {input.r1} > {output.r1_quality} 
@@ -59,10 +77,13 @@ rule fastp:
         json = f"{result_output}/fataQC/{{sample}}/fastp.json",
         log = f"log/{{sample}}_fastp.log"
     threads: 10
+    priority: 100
     params:
-        use_fastp = config["software"]["fastp"]
+        use_fastp = config["software"]["fastp"],
+        length_required = 28 if platforms == "10X" else 150,
+        fp_exp = "" if platforms == "10X" else " --disable_adapter_trimming "
     shell:
-        "{params.use_fastp} --thread {threads} --cut_right --length_required 28 --n_base_limit 1 --qualified_quality_phred 20 --unqualified_percent_limit 40 --dont_eval_duplication --in1 {input.r1} --in2 {input.r2} --out1 {output.r1_clean} --out2 {output.r2_clean} --html {output.html} --json {output.json} && echo 'fastp done' > {output.log}"
+        "{params.use_fastp} --thread {threads} --cut_right --length_required {params.length_required} --n_base_limit 1 --qualified_quality_phred 20 --unqualified_percent_limit 40 --dont_eval_duplication --in1 {input.r1} --in2 {input.r2} --out1 {output.r1_clean} --out2 {output.r2_clean} --html {output.html} --json {output.json} {params.fp_exp} && echo 'fastp done' > {output.log}"
 
 rule fastqc_clean:
     input:
@@ -73,6 +94,7 @@ rule fastqc_clean:
         r2_dir = directory(f"{result_output}/fataQC/{{sample}}/final_R2_fastqc"),
         log = f"log/{{sample}}_fastqc_clean.log"
     threads: 10
+    priority: 100
     params:
         use_fastqc = config["software"]["fastqc"]
     shell:
@@ -86,6 +108,7 @@ rule fqchk_clean:
         r1_quality = f"{result_output}/fataQC/{{sample}}/final_R1.quality.txt",
         r2_quality = f"{result_output}/fataQC/{{sample}}/final_R2.quality.txt",
         log = f"log/{{sample}}_fqchk_clean.log"
+    priority: 100
     params:
         use_seqtk = config["software"]["Seqtk"]
     shell:
@@ -97,6 +120,7 @@ rule stat_txt:
     output:
         txt = f"{result_output}/fataQC/{{sample}}/stat.txt",
         log = f"log/{{sample}}_stat.log"
+    priority: 100
     shell:
         """
         python script/parse_fastp_json.py {input.json} {output.txt}
@@ -127,6 +151,7 @@ if platforms == "10X":
             features = f"{result_output}/cellranger/{{sample}}/filtered_feature_bc_matrix/features.tsv.gz",
             matrix = f"{result_output}/cellranger/{{sample}}/filtered_feature_bc_matrix/matrix.mtx.gz"
         threads: 12
+        priority: 0
         resources:
             mem_mb=90000
             #slurm_partition=used_batch
@@ -271,18 +296,18 @@ if platforms == "huadaC4":
             o1=f"/home/pub/project/research/{contract_number}/{{sample}}_Oligo_R1.fastq.gz",
             o2=f"/home/pub/project/research/{contract_number}/{{sample}}_Oligo_R2.fastq.gz"
         output:
-            web_summary = f"{result_output}/cellranger/{{sample}}/web_summary.html",
-            metrics_csv = f"{result_output}/cellranger/{{sample}}/metrics_summary.csv",
-            cloupe_file = f"{result_output}/cellranger/{{sample}}/cloupe.cloupe",
-            barcodes = f"{result_output}/cellranger/{{sample}}/filtered_feature_bc_matrix/barcodes.tsv.gz",
-            features = f"{result_output}/cellranger/{{sample}}/filtered_feature_bc_matrix/features.tsv.gz",
-            matrix = f"{result_output}/cellranger/{{sample}}/filtered_feature_bc_matrix/matrix.mtx.gz"
+            web_summary = f"{result_output}/cellranger/{{sample}}/output/{{sample}}_scRNA_report.html",
+            metrics_csv = f"{result_output}/cellranger/{{sample}}/output/metrics_summary.xls",
+            barcodes = f"{result_output}/cellranger/{{sample}}/output/filtered_feature_bc_matrix/barcodes.tsv.gz",
+            features = f"{result_output}/cellranger/{{sample}}/output/filtered_feature_bc_matrix/features.tsv.gz",
+            matrix = f"{result_output}/cellranger/{{sample}}/output/filtered_feature_bc_matrix/matrix.mtx.gz"
         threads: 12
+        priority: 0
         resources:
             mem_mb=180000
             #slurm_partition=used_batch
         shell:
-            "{used_dnbc4tools} rna run --threads 12 --expectcells 10000 --outdir {result_output}/cellranger/ --cDNAfastq1 {input.f1} --cDNAfastq2 {input.f2} --oligofastq1 {input.o1} --oligofastq2 {input.o2} --name {wildcards.sample} --genomeDir {ref}"
+            "{used_dnbc4tools} rna run --threads 12 --expectcells 10000 --outdir {result_output}/cellranger/ --cDNAfastq1 {input.f1} --cDNAfastq2 {input.f2} --oligofastq1 {input.o1} --oligofastq2 {input.o2} --name {wildcards.sample} --genomeDir {ref} && rename filter_matrix filtered_feature_bc_matrix {result_output}/cellranger/{wildcards.sample}/output/*"
 
     #TODO: 这里的input里面有sample变量，识别不出来，要成显示的方式
     rule Cellranger_report_arrange_huadaC4:
@@ -295,8 +320,8 @@ if platforms == "huadaC4":
             r2_dir_raw = expand(f"{result_output}/fataQC/{{sample}}/R2_fastqc", sample=SAMPLES_NAME),
             r1_dir_clean = expand(f"{result_output}/fataQC/{{sample}}/final_R1_fastqc", sample=SAMPLES_NAME),
             r2_dir_clean = expand(f"{result_output}/fataQC/{{sample}}/final_R2_fastqc", sample=SAMPLES_NAME),
-            web_summary = expand(f"{result_output}/cellranger/{{sample}}/web_summary.html",sample=SAMPLES_NAME),
-            metrics_csv = expand(f"{result_output}/cellranger/{{sample}}/metrics_summary.csv",sample=SAMPLES_NAME),
+            web_summary = expand(f"{result_output}/cellranger/{{sample}}/output/{{sample}}_scRNA_report.html",sample=SAMPLES_NAME),
+            metrics_csv = expand(f"{result_output}/cellranger/{{sample}}/output/metrics_summary.xls",sample=SAMPLES_NAME),
             satat = expand(f"{result_output}/fataQC/{{sample}}/stat.txt",sample=SAMPLES_NAME)
         output:
             expand("{result_output}/report/SCGES_单细胞转录组测序分析报告/01.Quality_Statistics/Quality_Images/{sample}_base_content{ext}",sample=SAMPLES_NAME,ext=[".png",".pdf"],result_output=result_output),
@@ -308,20 +333,18 @@ if platforms == "huadaC4":
             '''
             Rscript ./script/Cellranger_report_arranger_10X.r  --read1 '{input.r1_quality_raw}'  --read2 '{input.r2_quality_raw}' -s '{SAMPLES_NAME}'  -f false  -o {result_output}/report/SCGES_单细胞转录组测序分析报告/01.Quality_Statistics/Quality_Images &&
             Rscript ./script/Cellranger_report_arranger_10X.r --read1 '{input.r1_quality_clean}' --read2 '{input.r2_quality_clean}' -s '{SAMPLES_NAME}' -f true -o {result_output}/report/SCGES_单细胞转录组测序分析报告/01.Quality_Statistics/Quality_Images &&
-            Rscript ./script/Cellranger_report_arranger_10_web_mer.r --webs '{input.web_summary}' --metrics '{input.metrics_csv}' --samples '{SAMPLES_NAME}' -o {result_output}/report/SCGES_单细胞转录组测序分析报告/02.CellRanger/  &&
-            Rscript ./script/Cellranger_report_arranger_10X_fastqc_stat.r --r1_dir_raw '{input.r1_dir_raw}' --r2_dir_raw '{input.r2_dir_raw}' --r1_dir_final '{input.r1_dir_clean}' --r2_dir_final '{input.r2_dir_clean}' --stat '{input.satat}' --sample '{SAMPLES_NAME}' -o {result_output}/report/SCGES_单细胞转录组测序分析报告/01.Quality_Statistics/ && 
-            cp -r {result_output}/cellranger/aggr/filtered_feature_bc_matrix {result_output}/report/SCGES_单细胞转录组测序分析报告/02.CellRanger/ && \
-            cp -r {result_output}/cellranger/aggr/web_summary.html {result_output}/report/SCGES_单细胞转录组测序分析报告/02.CellRanger/filtered_feature_bc_matrix 
+            Rscript ./script/Cellranger_report_arranger_10_web_mer.r --platforms huadaC4 --webs '{input.web_summary}' --metrics '{input.metrics_csv}' --samples '{SAMPLES_NAME}' -o {result_output}/report/SCGES_单细胞转录组测序分析报告/02.CellRanger/  &&
+            Rscript ./script/Cellranger_report_arranger_10X_fastqc_stat.r --r1_dir_raw '{input.r1_dir_raw}' --r2_dir_raw '{input.r2_dir_raw}' --r1_dir_final '{input.r1_dir_clean}' --r2_dir_final '{input.r2_dir_clean}' --stat '{input.satat}' --sample '{SAMPLES_NAME}' -o {result_output}/report/SCGES_单细胞转录组测序分析报告/01.Quality_Statistics/ 
         '''
-#&& \
-            # Rscript ./script/Cellranger_report_aggr.r --barcodes {result_output}/cellranger/aggr/filtered_feature_bc_matrix/barcodes.tsv.gz --csv {result_output}/cellranger/aggr/aggregation.csv --outfile {result_output}/report/SCGES_单细胞转录组测序分析报告/02.CellRanger/filtered_feature_bc_matrix/cell_sample.txt
-
 
 
 rule Cellranger_report:
     input: 
         metrics = expand(
             f"{result_output}/cellranger/{{sample}}/metrics_summary.csv",
+            sample=SAMPLES_NAME
+        ) if platforms == "10X" else expand(
+            f"{result_output}/cellranger/{{sample}}/output/metrics_summary.xls",
             sample=SAMPLES_NAME
         ),
         status = expand(f"{result_output}/fataQC/{{sample}}/stat.txt",sample=SAMPLES_NAME)
@@ -337,7 +360,7 @@ rule Cellranger_report:
             script/check_cellranger_result.py \
                 --input {input.metrics} \
                 --output {output.log} \
-                --platform 10X \
+                --platform {platforms} \
                 --sample {SAMPLES_NAME} \
                 --output_file {output.qc_log} \
                 --qcfile {input.status} \
@@ -378,5 +401,5 @@ rule wechat_notice2:
                 --qc_files {input} \
                 --platforms {platforms} \
                 --result_dir {abs_path} \
-                --project {contract_number} && \
+                --project {contract_number} &&  \
         echo 'wechat_notice2 done' > {output.log}"

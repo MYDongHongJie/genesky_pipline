@@ -41,6 +41,8 @@ def ckeck_dir(result_dir,out_dir):
     os.makedirs(CLUSTER_report_load, exist_ok=True)
     subprocess.call(f'cp -r {Cluster_dir}/{{umap,tsne}} {CLUSTER_report_load}', shell=True)
     subprocess.call(f'cp -r {Cluster_dir}/pre_clustering/PCA_ElbowPlot.p* {CLUSTER_report_load}', shell=True)
+    subprocess.call(f'cp -r {Cluster_dir}/dimensional_reduction.cloupe {CLUSTER_report_load}', shell=True)
+    subprocess.call(f'cp -r {Cluster_dir}/clustering_results.csv {CLUSTER_report_load}', shell=True)
     if os.path.isdir(qc_dir):
       subprocess.call(f'cp -r {Cluster_dir}/pre_clustering/VariableFeatures_distribution.p* {QC_report_load}', shell=True)
       subprocess.call(f'cp -r {Cluster_dir}/pre_clustering/{{nCount_RNA_umap,nFeature_RNA_umap}}.p* {QC_report_load}', shell=True)
@@ -83,8 +85,20 @@ def ckeck_dir(result_dir,out_dir):
     subprocess.call(f'cp -r {singleR_dir}/*{{png,pdf,xls,xlsx}} {SINGLER_report_dir}', shell=True)
   else:
     print("未检测到06_singleR文件夹")
-#TODO:可能后续继续添加
-   
+  all_celltype_dir = os.path.join(result_dir ,"Advanced_analytics", "all")
+  if os.path.isdir(all_celltype_dir):
+    print("检测到Advanced_analytics/all文件夹")
+    ALL_CELLTYPE_report_dir = os.path.join(out_dir , "08.All_Celltype")
+    os.makedirs(ALL_CELLTYPE_report_dir, exist_ok=True)
+    dir_name = ["01_Cluster","02_celltype_proportion_visualization","03_Marker","04_diffexp","05_Enrichment","Ident_CellType_Markers","06_Gene_Enrich"]
+    #TODO:后面可能还有高级分析
+    for dir in dir_name:
+      nedd_dif = os.path.join(all_celltype_dir, dir)
+      if os.path.isdir(nedd_dif):
+        subprocess.call(f'cp -r {nedd_dif} {ALL_CELLTYPE_report_dir}/{dir}', shell=True)
+  else:
+    print("未检测到Advanced_analytics/all文件夹")
+
 def project_make(id, project, department, sequencing, Ref, out_dir):
     """
     将项目信息写入格式化的文本文件（project.txt）

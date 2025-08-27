@@ -177,12 +177,16 @@ sub_Marker$add_argument("--pattle",type="character",default="customecol2_light",
 #               https://bioconductor.org/packages/release/bioc/html/DESeq2.html														
 
 #======================= Enrichment  parameters =======================
-sub_Enrichment=subparsers$add_parser("enrichment",help = "gene enrichment analysis")
+sub_Enrichment=subparsers$add_parser("Enrichments",help = "gene enrichment analysis")
 sub_Enrichment$add_argument("-f","--file",type="character",default=NULL,help="marker gene file or diffexp file")
 sub_Enrichment$add_argument("-s","--species",type="character",default="human",help="The species of the reference to use. ")
 sub_Enrichment$add_argument("-n","--topn",type="integer",default="10",help="Number of KEGG pathway to map")
 sub_Enrichment$add_argument("-r","--rankby",type="character",default="pvalue",help="Sort top based on this column")
 sub_Enrichment$add_argument("-c","--CirchordColor",type="character",default=NULL,help="Color palette of the circhord")
+#======================= GSEA  parameters =======================
+sub_GSEA=subparsers$add_parser("GSEA",help = "gene enrichment analysis")
+sub_GSEA$add_argument("-f","--file",type="character",default=NULL,help="marker gene file or diffexp file")
+sub_GSEA$add_argument("-s","--species",type="character",default="human",help="The species of the reference to use. ")
 #======================= singleR  parameters =======================
 sub_singleR=subparsers$add_parser("singleR",help = "singleR analysis")
 sub_singleR$add_argument("-r","--ref",type="character",default=NULL,help="marker gene file or diffexp file")
@@ -943,9 +947,10 @@ if ( "marker" %in% args ){
 	quit()
 }
 # ------------------------------------SUB Enrichement ----------------------------------------------
-if ("enrichment" %in% args) {
+if ("Enrichments" %in% args) {
 	source("/home/donghj/scRNA_snakemake/extra_dir/Enrichment_circor.r")
 	quiet_library("future.apply")
+	quiet_library("openxlsx")
 	species_mapping <- list(
   "human" = "Homo_sapiens", # human
   "mouse" = "Mus_musculus", # mouse
@@ -984,7 +989,43 @@ if ("enrichment" %in% args) {
         "#C9665B", "#668EA9", "#CA904E", "#8FB254", "#CAA4B7"
     )
 	}
-
+  readme_title = createStyle(
+					fontSize = 12, textDecoration = "bold", 
+					halign = "center", fgFill = "#D9D9D9", 
+					border = "bottom"
+	)
+	readme_Kegg <- list(
+  "ID" = " KEGG编号",
+  "Description" = "KEGG描述信息",
+  "GeneRatio" = "和该功能相关的差异基因与差异基因总数的比值",
+  "BgRatio" = "该功能相关的基因总数与基因组所有基因总数的比值",
+  "pvalue" = "P值",
+  "p.adjust" = "校正P值",
+  "qvalue" = "Q值（Q方法校正后的P值）",
+  "geneID" = "与该功能相关的差异基因ID",
+  "Count" = "与该功能相关的差异基因的数目",
+  "geneSymbol" = "与该功能相关的差异基因",
+  "keggLink" = "KEGG网页绘制通路链接",
+  "level_a" = "KEGG第一层级",
+  "level_b" = "KEGG第二层级"
+  )
+  readme_Go <- list(
+    "ID" = "GO编号",
+    "Description" = "GO描述信息",
+    "GeneRatio" = "和该功能相关的差异基因与差异基因总数的比值",
+    "BgRatio" = "该功能相关的基因总数与基因组所有基因总数的比值",
+    "pvalue" = "P值",
+    "p.adjust" = "校正P值",
+    "qvalue" = "Q值（Q方法校正后的P值）",
+    "geneID" = "与该功能相关的差异基因",
+    "Count" = "与该功能相关的差异基因的数目",
+    "Subontologies" = "GO分类"
+  )
+	style <- createStyle(
+					fontSize = 14,     # 字体大小
+					border = "TopBottomLeftRight" # 给单元格加上框线
+	)
+	
 	if ("cluster" %in% colnames(gene_file)) {
 		results <- future_lapply(unique(as.character(gene_file$cluster)), function(clust_num) {
 			tryCatch({
@@ -1007,6 +1048,19 @@ if ("enrichment" %in% args) {
 					"-s {species_package} -mode local > /dev/null 2>&1"
 				)
 				
+				wb <- createWorkbook()
+				sheet <- addWorksheet(wb,"Gene")
+				writeData(wb, sheet, genes, startCol = 1, startRow = 1, colNames = TRUE)
+				# 给数据区域加样式（包括表头 + 数据）
+				addStyle(
+					wb, sheet,
+					style = style,
+					rows = 1:(length(genes) + 1),   # 行数：1 行表头 + n 行数据
+					cols = 1,                     # 只有第 1 列
+					gridExpand = TRUE
+				)
+				
+				#saveWorkbook(wb, file = file.path(output, "allmarkers.xlsx"), overwrite = TRUE)
 				# 执行命令，不捕获输出，也不生成日志
 				system(cmd, intern = FALSE)
 				
@@ -1014,7 +1068,10 @@ if ("enrichment" %in% args) {
 				EnrichDat_file <- file.path(cluster_dir, "enrichGO.txt")
 				if (file.exists(EnrichDat_file)) {
 					EnrichDat <- read.delim(EnrichDat_file, header = TRUE, stringsAsFactors = FALSE)
-					
+					sheet <- addWorksheet(wb,"GO Summary")
+					writeData(wb, sheet, EnrichDat, startCol = 1, startRow = 1, colNames = TRUE)
+					addStyle(wb, sheet, style = readme_title, rows = 1, cols = 1:10, gridExpand = TRUE)
+					setColWidths(wb, sheet, cols = 1:10, widths = 15)
 					pdf(file.path(cluster_dir, paste0("GO_Top", opt$topn, "_enrichment_pathway_circos.pdf")),
 							width = 8, height = 7)
 					PlotEnrichCircos(EnrichDat, gene_diff = temp_maker, adjust.pvalue = FALSE,
@@ -1028,13 +1085,17 @@ if ("enrichment" %in% args) {
 													show_RichFactor = TRUE, title_override = NULL,
 													color_palette = CirchordColor, topn = opt$topn, rankby = opt$rankby)
 					dev.off()
+					file.remove(EnrichDat_file)
 				}
 				
 				# 读取 KEGG 富集结果并绘图
 				EnrichDat_file_kegg <- file.path(cluster_dir, "enrichKEGG.txt")
 				if (file.exists(EnrichDat_file_kegg)) {
 					EnrichDat_kegg <- read.delim(EnrichDat_file_kegg, header = TRUE, stringsAsFactors = FALSE)
-					
+					sheet <- addWorksheet(wb,"KEGG Summary")  
+					writeData(wb, sheet, EnrichDat_kegg, startCol = 1, startRow = 1, colNames = TRUE)
+					addStyle(wb, sheet, style = readme_title, rows = 1, cols = 1:13, gridExpand = TRUE)
+					setColWidths(wb, sheet, cols = 1:13, widths = 15)
 					pdf(file.path(cluster_dir, paste0("KEGG_Top", opt$topn, "_enrichment_pathway_circos.pdf")),
 							width = 9, height = 7)
 					PlotEnrichCircos(EnrichDat_kegg, gene_diff = temp_maker, adjust.pvalue = FALSE,
@@ -1048,8 +1109,31 @@ if ("enrichment" %in% args) {
 													show_RichFactor = TRUE, title_override = NULL,
 													color_palette = CirchordColor, topn = opt$topn, rankby = opt$rankby)
 					dev.off()
+					file.remove(EnrichDat_file_kegg)
+				}
+				#生成一个xlsx
+				for (sheet_name in c("README GO", "README KEGG")) {
+					sheet <- addWorksheet(wb, sheet_name)
+					writeData(wb, sheet, t(as.data.frame(c("标题", "说明"))), 
+										startCol = 1, startRow = 1, colNames = FALSE)
+					addStyle(wb, sheet, style = readme_title, rows = 1, cols = 1:2, gridExpand = TRUE)
+					# 选择对应的数据
+					if (sheet_name == "README GO") {
+						readme_data <- readme_Go
+					} else {
+						readme_data <- readme_Kegg
+					}
+					# 设置列宽和换行
+					setColWidths(wb, sheet, cols = 1, widths = 15)
+					setColWidths(wb, sheet, cols = 2, widths = 40)
+					# addStyle(wb, sheet, createStyle(wrapText = TRUE), 
+					# 				rows = 2:(nrow(readme_data)+1), cols = 2, gridExpand = TRUE)
+					readme_list_filter <- rownames_to_column(as.data.frame(t(as.data.frame(readme_data))), var = "tittle")
+					writeData(wb, sheet, readme_list_filter, startCol = 1, startRow = 2, colNames = FALSE)
 				}
 				
+				saveWorkbook(wb, file = file.path(cluster_dir, "Gene_Enrich_Summary.xlsx"), overwrite = TRUE)
+
 				return(TRUE)  # 标记成功
 			}, error = function(e) {
 				message("ERROR in cluster ", clust_num, ": ", e$message)
@@ -1057,7 +1141,13 @@ if ("enrichment" %in% args) {
 			})
 		}, future.seed = TRUE)
 	}
-
+  #删除临时文件
+	if (dir.exists(file.path(output, "temp"))) {
+  # 删除里面的文件
+  #file.remove(list.files(file.path(output, "temp"), full.names = TRUE))
+  # 删除目录本身
+  unlink(file.path(output, "temp"), recursive = TRUE, force = TRUE)
+	}
 	Anal_time = Sys.time() - start_time
 	print(paste("富集分析 分析已结束，耗时：", round(as.numeric(Anal_time, units = "mins"),2),"分钟"))
 	quit()
@@ -1408,14 +1498,12 @@ if ( "diffexp" %in% args ){
   	groupby_list = unlist(lapply(contrasts_list, function(x) strsplit(x,":")[[1]][1]))
 		group_diff = setdiff(groupby_list, colnames(single_ob@meta.data))
 		if (length(group_diff)!=0){
-			print(paste("选择的差异分组中的 ",group_diff," 不在rds的meta.data中"))
-			quit()
+			stop(paste("选择的差异分组中的", group_diff, "不在 rds 的 meta.data 中"), call. = TRUE)
 		}
 		splitby=opt$splitby
 		if(!is.null(splitby)) {
 			if (!splitby %in% colnames(single_ob@meta.data)){
-				print(paste("选择的差异分组中的 ",splitby," 不在rds的meta.data中"))
-				quit()
+				stop(paste("选择的差异分组中的", group_diff, "不在 rds 的 meta.data 中"), call. = TRUE)
 			}else{
 				print(glue::glue("将按照{splitby}拆分做两组细胞之间的差异分析"))
 			}
@@ -1470,7 +1558,7 @@ if ( "diffexp" %in% args ){
 				}
 			}
 			}else{
-					output_dir = file.path(output,"all")
+					output_dir = file.path(output,"all_cell")
 					dir.create(output_dir,recursive = T)
 					future.apply::future_lapply( contrasts_list, function( contrast){
 					RunDiffexp( object = single_ob,
@@ -1519,7 +1607,149 @@ if ( "diffexp" %in% args ){
 		print(paste("差异分析已结束，耗时：", round(as.numeric(Anal_time, units = "mins"),2),"分钟"))
 		quit()
 }
-
-
-
-
+#-------------------------------------sub GSEA------------------------------------------------
+if ("GSEA" %in% args) {
+	quiet_library("future.apply")
+	quiet_library("openxlsx")
+  species_mapping <- list(
+  "human" = "Homo_sapiens", # human
+  "mouse" = "Mus_musculus", # mouse
+  "rat" = "Rattus_norvegicus", # rat
+  "dme" = "fruit_fly", # fruit_fly
+  "dre" = "zebrafish_danio_rerio", # zebrafish
+  "ath" = "Oryza_sativa_Japonica_Group", # Arabidopsis
+  "sce" = "Saccharomyces_cerevisiae_S288C", # yeast
+  "cel" = "Caenorhabditis_elegans", # C.elegans
+  "bta" = "Bos_taurus", # Bovine
+  "mcc" = "macaca_mulatta", # monkey
+  "cfa" = "canis_lupus_familiaris", # dog
+  "ssc" = "sus_scrofa", # pig
+  "gga" = "Gallus_gallus" # chicken
+	)
+	species_package <- species_mapping[[opt$species]]
+	if(is.null(species_package)){message("species not found, please check your input");quit()}
+	start_time = Sys.time()
+	print("GSEA分析开始")
+	if (endsWith(opt$file, ".xlsx")){
+		quiet_library("openxlsx")
+		gene_file = read.xlsx(opt$file, sheet = 1)
+	}else{
+		gene_file = read.delim(opt$file, header = T, stringsAsFactors = F)
+	}
+	readme_title = createStyle(
+					fontSize = 12, textDecoration = "bold", 
+					halign = "center", fgFill = "#D9D9D9", 
+					border = "bottom"
+	)
+	readme_Kegg <- list(
+    "ID" = "KEGG编号",
+    "Description" = "KEGG描述信息",
+    "setSize" = "每次置换检验的数据集大小",
+    "enrichmentScore" = "富集分数",
+    "NES" = "归一化之后的富集分数",
+		"pvalue" = "P值",
+    "p.adjust" = "校正P值（BH方法校正后的P值）",
+    "qvalue" = "Q值（Q方法校正后的P值）",
+    "rank" = "核心基因的最大排序值",
+    "leading_edge" = "tags表示核心基因占该基因集基因总数的比例，list表示核心基因占所有基因总数的比例，singal通过公式tag*(1-list)*(N/(N-Nh))计算得到,N代表该基因集下的基因总数，Nh代表核心基因数",
+    "core_enrichment" = "富集的核心基因的基因ID，用“/”分割",
+		"geneSymbol" = "富集的核心基因的基因名，用“/”分割"
+  )
+  readme_Go <- list(
+    "ID" = "GO编号",
+    "Description" = "GO描述信息",
+    "setSize" = "每次置换检验的数据集大小",
+    "enrichmentScore" = "富集分数",
+    "NES" = "归一化之后的富集分数",
+		"pvalue" = "P值",
+    "p.adjust" = "校正P值（BH方法校正后的P值）",
+    "qvalue" = "Q值（Q方法校正后的P值）",
+    "rank" = "核心基因的最大排序值",
+    "leading_edge" = "tags表示核心基因占该基因集基因总数的比例，list表示核心基因占所有基因总数的比例，singal通过公式tag*(1-list)*(N/(N-Nh))计算得到,N代表该基因集下的基因总数，Nh代表核心基因数",
+    "core_enrichment" = "富集的核心基因的基因ID，用“/”分割",
+		" Subontologies" = "GO分类",
+		"geneSymbol" = "富集的核心基因的基因名，用“/”分割"
+  )
+  if ("cluster" %in% colnames(gene_file)) {
+		results <- future_lapply(unique(as.character(gene_file$cluster)), function(clust_num) {
+			tryCatch({
+				# 创建临时和输出目录
+				temp <- file.path(output, "temp", clust_num)
+				dir.create(temp, recursive = TRUE, showWarnings = FALSE)
+				cluster_dir <- file.path(output, paste0(clust_num, "_GSEA"))
+				dir.create(cluster_dir, recursive = TRUE, showWarnings = FALSE)
+				# 筛选该 cluster 的基因
+				temp_maker <- gene_file[gene_file$cluster == clust_num, ]
+				temp_maker <- temp_maker %>% select(gene,avg_log2FC) %>% arrange(desc(avg_log2FC))
+				temp_file <- file.path(temp, paste0(clust_num, "_marker_gene.txt"))
+				write.table(temp_maker, temp_file, quote = FALSE, row.names = FALSE, col.names = FALSE, sep = "\t")
+				
+				# 构造 Perl 命令，并重定向所有输出到 /dev/null
+				cmd <- glue::glue(
+					"perl /home/genesky/pipeline/tools_script/gene_enrichment/latest/gene_enrichment.pl ",
+					"-g {temp_file} -a gsea -t {temp} -o {cluster_dir} ",
+					"-s {species_package} -mode local > /dev/null 2>&1"
+				)
+        system(cmd, intern = FALSE)
+				EnrichDat_file <- file.path(cluster_dir, "enrichGO.txt")
+				if (file.exists(EnrichDat_file)) {
+					EnrichDat <- read.delim(EnrichDat_file, header = TRUE, stringsAsFactors = FALSE)
+					wb <- createWorkbook()
+					sheet <- addWorksheet(wb,"GO Summary")
+					writeData(wb, sheet, EnrichDat, startCol = 1, startRow = 1, colNames = TRUE)
+					addStyle(wb, sheet, style = readme_title, rows = 1, cols = 1:13, gridExpand = TRUE)
+					setColWidths(wb, sheet, cols = 1:13, widths = 15)
+					setColWidths(wb, sheet, cols = 2, widths = 30)
+					sheet <- addWorksheet(wb, "README")
+					writeData(wb, sheet, t(as.data.frame(c("标题", "说明"))), 
+										startCol = 1, startRow = 1, colNames = FALSE)
+					addStyle(wb, sheet, style = readme_title, rows = 1, cols = 1:2, gridExpand = TRUE)
+					setColWidths(wb, sheet, cols = 1, widths = 15)
+					setColWidths(wb, sheet, cols = 2, widths = 40)
+					# addStyle(wb, sheet, createStyle(wrapText = TRUE), .
+					# 				rows = 2:(nrow(readme_data)+1), cols = 2, gridExpand = TRUE)
+					readme_list_filter <- rownames_to_column(as.data.frame(t(as.data.frame(readme_Go))), var = "tittle")
+					writeData(wb, sheet, readme_list_filter, startCol = 1, startRow = 2, colNames = FALSE)
+					saveWorkbook(wb, file = file.path(cluster_dir, "GSEA_GO_Summary.xlsx"), overwrite = TRUE)
+					file.remove(EnrichDat_file)
+				}
+				EnrichDat_file <- file.path(cluster_dir, "enrichKEGG.txt")
+				if (file.exists(EnrichDat_file)) {
+					EnrichDat <- read.delim(EnrichDat_file, header = TRUE, stringsAsFactors = FALSE)
+					wb <- createWorkbook()
+					sheet <- addWorksheet(wb,"KEGG Summary")
+					writeData(wb, sheet, EnrichDat, startCol = 1, startRow = 1, colNames = TRUE)
+					addStyle(wb, sheet, style = readme_title, rows = 1, cols = 1:15, gridExpand = TRUE)
+					setColWidths(wb, sheet, cols = 1:15, widths = 15)
+					setColWidths(wb, sheet, cols = 2, widths = 30)
+					sheet <- addWorksheet(wb, "README")
+					writeData(wb, sheet, t(as.data.frame(c("标题", "说明"))), 
+										startCol = 1, startRow = 1, colNames = FALSE)
+					addStyle(wb, sheet, style = readme_title, rows = 1, cols = 1:2, gridExpand = TRUE)
+					setColWidths(wb, sheet, cols = 1, widths = 15)
+					setColWidths(wb, sheet, cols = 2, widths = 40)
+					# addStyle(wb, sheet, createStyle(wrapText = TRUE), .
+					# 				rows = 2:(nrow(readme_data)+1), cols = 2, gridExpand = TRUE)
+					readme_list_filter <- rownames_to_column(as.data.frame(t(as.data.frame(readme_Kegg))), var = "tittle")
+					writeData(wb, sheet, readme_list_filter, startCol = 1, startRow = 2, colNames = FALSE)
+					saveWorkbook(wb, file = file.path(cluster_dir, "GSEA_KEGG_Summary.xlsx"), overwrite = TRUE)
+					file.remove(EnrichDat_file)
+				}
+				return(TRUE)  # 标记成功
+			}, error = function(e) {
+				message("ERROR in cluster ", clust_num, ": ", e$message)
+				return(FALSE) # 标记失败
+			})
+		}, future.seed = TRUE)
+	}
+  #删除临时文件
+	# if (dir.exists(file.path(output, "temp"))) {
+  # # 删除里面的文件
+  # #file.remove(list.files(file.path(output, "temp"), full.names = TRUE))
+  # # 删除目录本身
+  # unlink(file.path(output, "temp"), recursive = TRUE, force = TRUE)
+	# }
+	Anal_time = Sys.time() - start_time
+	print(paste("GSEA 分析已结束，耗时：", round(as.numeric(Anal_time, units = "mins"),2),"分钟"))
+	quit()
+}

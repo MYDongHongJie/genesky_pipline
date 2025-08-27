@@ -143,10 +143,9 @@ if config["header"].get("cellranger_Analysis",False):
     HUADA_C4_REQUIRED = [
     file 
     for sublist in [
-        expand("{result_output}/cellranger/{sample}/web_summary.html", sample=SAMPLES_NAME, result_output=result_output),
-        expand("{result_output}/cellranger/{sample}/metrics_summary.csv", sample=SAMPLES_NAME, result_output=result_output),
-        expand("{result_output}/cellranger/{sample}/cloupe.cloupe", sample=SAMPLES_NAME, result_output=result_output),
-        expand("{result_output}/cellranger/{sample}/filtered_feature_bc_matrix/{matrixfile}", 
+        expand("{result_output}/cellranger/{sample}/output/{sample}_scRNA_report.html", sample=SAMPLES_NAME, result_output=result_output),
+        expand("{result_output}/cellranger/{sample}/output/metrics_summary.xls", sample=SAMPLES_NAME, result_output=result_output),
+        expand("{result_output}/cellranger/{sample}/output/filtered_feature_bc_matrix/{matrixfile}", 
                sample=SAMPLES_NAME, 
                matrixfile=['barcodes.tsv.gz','features.tsv.gz','matrix.mtx.gz'], 
                result_output=result_output),
@@ -200,24 +199,30 @@ def get_Advanced_analytics_input(config_file):
 
 ADVANCED_RESULT=[]
 
-if config["subcluster"]["subset"].lower() =="all":
-    ALL_Celltype =True
-    if config['subcluster']['module'].get("celltype",False):
-        params_list = get_Advanced_analytics_input(config)
-        print(params_list)
-        include: "script/rules/celltype.smk"
-        ADVANCED_RESULT.append(f"{params_list["output"]}/celltype_annoted.rds")
-        ADVANCED_RESULT.append(f"{params_list['output']}/03_Marker/allmarkers.xlsx")
-        ADVANCED_RESULT = ADVANCED_RESULT +expand("{outdir}/02_celltype_proportion_visualization/SummaryCluster_celltype_splitby_{label}_alluvial{ext}",
-               label=["sample.name", "group"], ext=[".pdf", ".png"], outdir=params_list["output"])
+if config["subcluster"]["subset"].lower() !="all":
+    include: "script/rules/subcluster.smk" #TODO: 亚群的脚本还没写
+    ADVANCED_RESULT.append(f"{params_list["output"]}/sub.rds")
 
-    if config['subcluster']['module'].get('diffexp',False):
-        include: "script/rules/diffexp.smk"
-        Diff_contract = config['subcluster']['diffexp']['Diff_contract']
-        #Diff_contract: "group:case:control,group1:case:case1,group2:control:control1" 
-        Diff_contract.split(",")
+if config['subcluster']['module'].get("celltype",False):
+    params_list = get_Advanced_analytics_input(config)
+    print(params_list)
+    include: "script/rules/celltype.smk"
+    ADVANCED_RESULT.append(f"{params_list["output"]}/celltype_annoted.rds")
+    ADVANCED_RESULT.append(f"{params_list['output']}/03_Marker/allmarkers.xlsx")
+    ADVANCED_RESULT = ADVANCED_RESULT +expand("{outdir}/02_celltype_proportion_visualization/SummaryCluster_celltype_splitby_{label}_alluvial{ext}",
+            label=["sample.name", "group"], ext=[".pdf", ".png"], outdir=params_list["output"])
 
-print(SAMPLES_NAME)
+if config['subcluster']['module'].get('diffexp',False):
+    contract = config["subcluster"]["Diff_contract"]
+    contract = contract.split(",")
+    contract_splits =  [s.replace(":", "_", 1).replace(":", "-vs-", 1) for s in contract]
+    include: "script/rules/diffexp.smk"
+    #Diff_contract = config['subcluster']['diffexp']['Diff_contract']
+    ADVANCED_RESULT.append("log/diffexp.log")
+    ADVANCED_RESULT=ADVANCED_RESULT+ expand("log/diff_enrichment_{contract_split}.log", contract_split=contract_splits)
+    ADVANCED_RESULT=ADVANCED_RESULT+ expand("log/diff_GSEA_{contract_split}.log", contract_split=contract_splits)
+
+
 def all_input(wildcards):
     wanted_input = []
     if config['header'].get('cellranger_Analysis', False):
@@ -492,7 +497,7 @@ rule enrichment:
     priority: 100
     shell:
         "echo '运行的代码是:' >> {output.report_log};"
-        "echo 'Rscript {params.script_file} -o {result_output}/05_Enrichment enrichment "
+        "echo 'Rscript {params.script_file} -o {result_output}/05_Enrichment Enrichments "
         "--file {input} -s {species} --topn {params.topn} --rankby {params.rankby}' >> {output.report_log};"
         "source /home/genesky/software/conda/4.9.2/bin/activate /home/donghj/snakemake && "
         "{{ "

@@ -1,6 +1,5 @@
 <t1>差异表达分析</t1>
 <p1>该部分分析内容给出：</p1>
 <p3-30>√.&nbsp;&nbsp; Wilcoxon检验 ；</p3-30>
-<p3-30>√.&nbsp;&nbsp; Kruskal-Wallis检验 ；</p3-30>
 <p3-30>√.&nbsp;&nbsp; ANOVA方差分析 ；</p3-30>
-<p3-30>√.&nbsp;&nbsp; DEseq2差异分析 。</p3-30>
+

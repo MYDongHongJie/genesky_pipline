@@ -103,7 +103,7 @@ def GetOptions(args = sys.argv[1:]):
     parser = argparse.ArgumentParser(description = "根据项目路径下的文件推算出项目,用于项目完成之后发送微信提醒")
     parser.add_argument("-i", "--qc_files", required=True, help = "qc_files")
     parser.add_argument("-c", "--project", help ="项目号")
-    parser.add_argument("--platforms", help ="10X or huada")
+    parser.add_argument("--platforms", help ="10X or huadaC4")
     parser.add_argument("--result_dir", help ="结果路径")
     options = parser.parse_args(args)
     return options
@@ -150,7 +150,7 @@ def parse_qc_txt(txt):
     with open(txt, 'r') as fh:
         for line in fh:
             line = line.strip()
-            if re.search('\w', line):
+            if re.search(r'\w', line):
                 if(re.search('condition', line, re.I)):
                     name, qc_condition = line.replace(' ', '').split(':', 1)
                 else:
@@ -219,7 +219,7 @@ if __name__ == '__main__':
     # 消息接收的用户新增：微生物方向的发给杨丹，其他发给周元昊
     if big_direction == 'MGS':
         user_name += "|" + user_id['panyy']
-    elif big_direction == 'WTS' or big_direction == '10X':
+    elif big_direction == 'WTS' or big_direction == '10X' or big_direction == 'huadaC4':
         user_name += "|" + user_id['zhouyh']
     else:
         user_name += "|" + user_id['yangd']

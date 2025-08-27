@@ -168,9 +168,14 @@ def main():
     with open(args.output_file, 'w') as out:
         out.write("Sample\tCell_Count\tBase_Count\tQC\n")
         for sample in args.sample:
-            metrics = read_metrics(metrics_dic[sample])
-            cell_count = int(metrics.get("Estimated Number of Cells", "0").replace(",", ""))
-
+            if args.platform == '10X':
+                metrics = read_metrics(metrics_dic[sample])
+                cell_count = int(metrics.get("Estimated Number of Cells", "0").replace(",", ""))
+            if args.platform == 'huadaC4':
+                file=open(metrics_dic[sample],'r')
+                paras,line2=csv.reader(file, delimiter=delimiter)
+                sampledict=dict(zip(paras, line2))
+                cell_count = int(sampledict.get("Estimated number of cell","0").replace(",", ""))
             min_bc = args.base_count_gt if cell_count >= args.cell_count else args.base_count_le
             raw_bases = read_status(status_dic[sample]).get("raw_bases", 0)
             raw_bases = float(raw_bases)
@@ -186,8 +191,10 @@ def main():
 
         out.write("\n")
         if not failed:
+            print(f"共计{len(args.sample)}个样本, 质控合格\nCondition:0\n")
             out.write(f"共计{len(args.sample)}个样本, 质控合格\nCondition:0\n")
         else:
+            print(f"共计{len(args.sample)}个样本, {len(failed)}个样本质控不合格, 不合格样本: {' '.join(failed)}\nCondition:1\n")
             out.write(f"共计{len(args.sample)}个样本, {len(failed)}个样本质控不合格, 不合格样本: {' '.join(failed)}\nCondition:1\n")
 
 
