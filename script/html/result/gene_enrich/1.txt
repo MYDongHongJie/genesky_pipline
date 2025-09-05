@@ -4,46 +4,46 @@
 <p1>GO富集结果如下：
 </p1>
 <p2>表. GO富集结果统计表。</p2>
-<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Gene_Enrich_Summary.xlsx -s 2 --scroll</get>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Gene_Enrich_Summary.xlsx -s 2 --scroll</get>
 <span><br></span>
 <p1>表格标题说明：
 </p1>
-<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Gene_Enrich_Summary.xlsx -s 'README GO'</get>
+<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Gene_Enrich_Summary.xlsx -s 'README GO'</get>
 
 <span><br></span>
 <p1>GO富集统计柱状图如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Custom_Figures/go_barplot.pdf</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Custom_Figures/go_barplot.pdf</pics>
 <p2>图. GO富集统计柱状图。横坐标为基因数量。</p2>
 
 <span><br></span>
 <p1>GO富集统计树状图如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Custom_Figures/go_bp.pdf</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Custom_Figures/go_bp.pdf</pics>
 <p2>图. GO富集BP统计树状图。横坐标为基因数量。</p2>
 
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Custom_Figures/go_cc.pdf</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Custom_Figures/go_cc.pdf</pics>
 <p2>图. GO富集CC统计树状图。横坐标为基因数量。</p2>
 
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Custom_Figures/go_mf.pdf</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Custom_Figures/go_mf.pdf</pics>
 <p2>图. GO富集MF统计树状图。横坐标为基因数量。</p2>
 
 <p1>GO富集Top10通路圈图如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/GO_Top10_enrichment_pathway_circos.png</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/GO_Top10_enrichment_pathway_circos.png</pics>
 <p2>图. GO富集Top10通路圈图。</p2>
 
 <span><br></span>
 <get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
-GO富集结果统计表	= SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Gene_Enrich_Summary.xlsx;
-GO富集统计柱状图	= SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Custom_Figures/go_barplot.pdf;
-GO富集BP统计树状图	= SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Custom_Figures/go_bp.pdf;
-GO富集CC统计树状图	= SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Custom_Figures/go_cc.pdf;
-GO富集MF统计树状图	= SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Custom_Figures/go_mf.pdf;
-GO富集Top10通路圈图 = SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/GO_Top10_enrichment_pathway_circos.png;
+GO富集结果统计表	= SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Gene_Enrich_Summary.xlsx;
+GO富集统计柱状图	= SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Custom_Figures/go_barplot.pdf;
+GO富集BP统计树状图	= SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Custom_Figures/go_bp.pdf;
+GO富集CC统计树状图	= SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Custom_Figures/go_cc.pdf;
+GO富集MF统计树状图	= SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Custom_Figures/go_mf.pdf;
+GO富集Top10通路圈图 = SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/GO_Top10_enrichment_pathway_circos.png;
 '</get>

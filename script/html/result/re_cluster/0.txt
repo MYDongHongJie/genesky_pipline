@@ -4,24 +4,24 @@
 <p1>按细胞类型绘制UMAP降维聚类结果如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/08.All_Celltype/01_Cluster/umap/umap_reduction_groupby_celltype.png</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/01_Cluster/umap/umap_reduction_groupby_celltype.png</pics>
 <p2>图. 基于细胞类型的UMAP降维聚类结果图。</p2>
 
 <p1>按样本绘制UMAP降维聚类结果如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/08.All_Celltype/01_Cluster/umap/umap_reduction_groupby_sample.name.png</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/01_Cluster/umap/umap_reduction_groupby_sample.name.png</pics>
 <p2>图. 基于样本分类UMAP降维聚类结果图。</p2>
 
 <p1>样本间细胞类型占比柱状图结果如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/08.All_Celltype/02_celltype_proportion_visualization/SummaryCluster_celltype_splitby_sample.name.png</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/02_celltype_proportion_visualization/SummaryCluster_celltype_splitby_sample.name.png</pics>
 <p2>图. 样本间细胞类型占比柱状图。</p2>
 
 <span><br></span>
 <get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
-基于细胞类型的UMAP降维聚类结果图	= SCGES_*/08.All_Celltype/01_Cluster/umap/umap_reduction_groupby_celltype.png;
-基于样本分类UMAP降维聚类结果图		= SCGES_*/08.All_Celltype/01_Cluster/umap/umap_reduction_groupby_sample.name.png;
-样本间细胞类型占比柱状图	= SCGES_*/08.All_Celltype/02_celltype_proportion_visualization/SummaryCluster_celltype_splitby_sample.name.png;
+基于细胞类型的UMAP降维聚类结果图	= SCGES_*/Advanced_analytics/*/01_Cluster/umap/umap_reduction_groupby_celltype.png;
+基于样本分类UMAP降维聚类结果图		= SCGES_*/Advanced_analytics/*/01_Cluster/umap/umap_reduction_groupby_sample.name.png;
+样本间细胞类型占比柱状图	= SCGES_*/Advanced_analytics/*/02_celltype_proportion_visualization/SummaryCluster_celltype_splitby_sample.name.png;
 '</get>

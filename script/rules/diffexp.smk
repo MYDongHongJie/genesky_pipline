@@ -27,7 +27,6 @@ rule diffexp:
 
 rule diffexp_result_arranger:
     input:
-        diff_out = directory(f"{params_list['output']}/04_diffexp/"),
         log = "log/diffexp.log" 
     output:
         allgene=expand("{outdir}/05_Enrichment/{contract_split}/all_gene_merged.xls",outdir=params_list['output'],contract_split=contract_splits),
@@ -36,12 +35,13 @@ rule diffexp_result_arranger:
         log = "log/diffexp_result_arranger.log"
     params:
         report_log="log/report_need.log",
+        diff_out = directory(f"{params_list['output']}/04_diffexp/"),
         output = params_list['output']+"/05_Enrichment"
     shell:
         "echo 运行的代码是: >> {params.report_log};"
-        "echo 'Rscript ./script/Diff_file_arranger.r --input {input.diff_out} --output {params.output}'  >> {params.report_log} ;"
+        "echo 'Rscript ./script/Diff_file_arranger.r --input {params.diff_out} --output {params.output}'  >> {params.report_log} ;"
         "source /home/genesky/software/conda/4.9.2/bin/activate /home/donghj/snakemake && "
-        "{{ if Rscript  ./script/Diff_file_arranger.r --input {input.diff_out} --output {params.output} 2>> {params.report_log} ;"
+        "{{ if Rscript  ./script/Diff_file_arranger.r --input {params.diff_out} --output {params.output} 2>> {params.report_log} ;"
         "then echo '[SUCCESS] rule diffexp_result_arranger OK' >> {params.report_log} && touch {output.log}; "
         "else echo '[ERROR] rule diffexp_result_arranger FAILED' >> {params.report_log}; exit 1; fi; }}"
 
@@ -83,7 +83,7 @@ rule diff_GSEA:
         log="log/diff_GSEA_{contract_split}.log"
     params:
         report_log="log/report_need.log",
-        result_output = params_list['output']+"/06_Gene_Enrich",
+        result_output = params_list['output']+"/06_Gene_GSEA",
         enrichment = params_list['output']+"/05_Enrichment"
     shell:
         "echo '运行的代码是:' >> {params.report_log};"

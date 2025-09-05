@@ -4,44 +4,44 @@
 <p1>KEGG富集结果如下：
 </p1>
 <p2>表. KEGG富集结果统计表。</p2>
-<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Gene_Enrich_Summary.xlsx -s 3 --scroll</get>
+<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Gene_Enrich_Summary.xlsx -s 3 --scroll</get>
 <span><br></span>
 <p1>表格标题说明：
 </p1>
-<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Gene_Enrich_Summary.xlsx -s 'README KEGG'</get>
+<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Gene_Enrich_Summary.xlsx -s 'README KEGG'</get>
 
 <span><br></span>
 <p1>KEGG富集散点图如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Custom_Figures/kegg_dotplot.pdf</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Custom_Figures/kegg_dotplot.pdf</pics>
 <p2>图. KEGG富集散点图。点越大代表通路中包含的基因数量越多，点的颜色代表校正p值的显著程度。</p2>
 
 <span><br></span>
 <p1>KEGG富集热图如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Custom_Figures/kegg_heatmap.pdf</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Custom_Figures/kegg_heatmap.pdf</pics>
 <p2>图. KEGG富集热图。</p2>
 
 <span><br></span>
 <p1>KEGG富集基因在通路中的标记结果如下：
 </p1>
 <span><br></span>
-<ifr>SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/KEGG_Images/*.html</ifr>
+<ifr>SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/KEGG_Images/*.html</ifr>
 <p2>图. KEGG通路绘图。红色标记为富集基因。</p2>
 
 <p1>KEGG富集Top10通路圈图如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/KEGG_Top10_enrichment_pathway_circos.png</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/KEGG_Top10_enrichment_pathway_circos.png</pics>
 <p2>图. KEGG富集Top10通路圈图。</p2>
 
 <span><br></span>
 <get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
-KEGG富集结果统计表	= SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Gene_Enrich_Summary.xlsx;
-KEGG富集散点图		= SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Custom_Figures/kegg_dotplot.pdf;
-KEGG富集热图		= SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/Custom_Figures/kegg_heatmap.pdf;
-KEGG通路绘图		= SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/KEGG_Images/*.html;
-KEGG富集Top10通路圈图 = SCGES_*/08.All_Celltype/05_Enrichment/*/ALL/*/KEGG_Top10_enrichment_pathway_circos.png;
+KEGG富集结果统计表	= SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Gene_Enrich_Summary.xlsx;
+KEGG富集散点图		= SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Custom_Figures/kegg_dotplot.pdf;
+KEGG富集热图		= SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/Custom_Figures/kegg_heatmap.pdf;
+KEGG通路绘图		= SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/KEGG_Images/*.html;
+KEGG富集Top10通路圈图 = SCGES_*/Advanced_analytics/*/05_Enrichment/*/ALL/*/KEGG_Top10_enrichment_pathway_circos.png;
 '</get>

@@ -20,7 +20,8 @@ def ckeck_dir(result_dir,out_dir):
     subfolders = [d.name for d in Path(cellranger_dir).iterdir() if d.is_dir() and d.name != "aggr"]
     os.makedirs(SUPPLEMENTARY_FILES, exist_ok=True)
     for subfolder in subfolders:
-      subprocess.call(f'mkdir  {SUPPLEMENTARY_FILES}/{subfolder}', shell=True)
+      os.makedirs(os.path.join(SUPPLEMENTARY_FILES,subfolder), exist_ok=True)
+      #subprocess.call(f'mkdir  {SUPPLEMENTARY_FILES}/{subfolder}', shell=True)
       subprocess.call(f'cp -r {cellranger_dir}/{subfolder}/{{filtered_feature_bc_matrix,molecule_info.h5,web_summary.html}} {SUPPLEMENTARY_FILES}/{subfolder}', shell=True)
   else:
     print("未检测到cellranger文件夹")
@@ -39,7 +40,7 @@ def ckeck_dir(result_dir,out_dir):
     print("检测到02_Cluster文件夹")
     CLUSTER_report_load = os.path.join(out_dir ,"04.Dimensional_Reduction")
     os.makedirs(CLUSTER_report_load, exist_ok=True)
-    subprocess.call(f'cp -r {Cluster_dir}/{{umap,tsne}} {CLUSTER_report_load}', shell=True)
+    subprocess.call(f'cp -r {Cluster_dir}/umap {Cluster_dir}/tsne {CLUSTER_report_load} 2>/dev/null', shell=True)
     subprocess.call(f'cp -r {Cluster_dir}/pre_clustering/PCA_ElbowPlot.p* {CLUSTER_report_load}', shell=True)
     subprocess.call(f'cp -r {Cluster_dir}/dimensional_reduction.cloupe {CLUSTER_report_load}', shell=True)
     subprocess.call(f'cp -r {Cluster_dir}/clustering_results.csv {CLUSTER_report_load}', shell=True)
@@ -85,19 +86,42 @@ def ckeck_dir(result_dir,out_dir):
     subprocess.call(f'cp -r {singleR_dir}/*{{png,pdf,xls,xlsx}} {SINGLER_report_dir}', shell=True)
   else:
     print("未检测到06_singleR文件夹")
-  all_celltype_dir = os.path.join(result_dir ,"Advanced_analytics", "all")
-  if os.path.isdir(all_celltype_dir):
-    print("检测到Advanced_analytics/all文件夹")
-    ALL_CELLTYPE_report_dir = os.path.join(out_dir , "08.All_Celltype")
-    os.makedirs(ALL_CELLTYPE_report_dir, exist_ok=True)
-    dir_name = ["01_Cluster","02_celltype_proportion_visualization","03_Marker","04_diffexp","05_Enrichment","Ident_CellType_Markers","06_Gene_Enrich"]
-    #TODO:后面可能还有高级分析
-    for dir in dir_name:
-      nedd_dif = os.path.join(all_celltype_dir, dir)
-      if os.path.isdir(nedd_dif):
-        subprocess.call(f'cp -r {nedd_dif} {ALL_CELLTYPE_report_dir}/{dir}', shell=True)
+  dir_name = ["01_Cluster","02_celltype_proportion_visualization","03_Marker","04_diffexp","05_Enrichment","Ident_CellType_Markers","06_Gene_GSEA"]
+  Advanced_result = []
+  for root, dirs, files in os.walk(os.path.join(result_dir ,"Advanced_analytics")):
+    if any (dir in dirs for dir in dir_name):
+      Advanced_result.append(os.path.basename(root))
+  if Advanced_result:
+    for group_dir in Advanced_result:
+      all_celltype_dir = os.path.join(result_dir ,"Advanced_analytics", group_dir)
+      if os.path.isdir(all_celltype_dir):
+        print(f"检测到Advanced_analytics/{group_dir}文件夹")
+        ALL_CELLTYPE_report_dir = os.path.join(out_dir , "Advanced_analytics", group_dir)
+        os.makedirs(ALL_CELLTYPE_report_dir, exist_ok=True)
+        if os.path.isfile(os.path.join(all_celltype_dir,"celltype_annoted.rds")):
+          os.makedirs(os.path.join(out_dir ,"../","Supplementary_Backup",group_dir),exist_ok=True)
+          subprocess.call(f'cp -r {os.path.join(all_celltype_dir,"celltype_annoted.rds")} {os.path.join(out_dir ,"../","Supplementary_Backup",group_dir)}', shell=True)
+          
+      for dir in dir_name:
+        nedd_dif = os.path.join(all_celltype_dir, dir)
+        if os.path.isdir(nedd_dif):
+          if os.path.isdir(os.path.join(ALL_CELLTYPE_report_dir,dir)):
+            subprocess.call(f'cp -r {nedd_dif}/* {ALL_CELLTYPE_report_dir}/{dir}', shell=True)
+          else:
+            subprocess.call(f'cp -r {nedd_dif} {ALL_CELLTYPE_report_dir}/{dir}', shell=True)
+      if os.path.isdir(os.path.join(all_celltype_dir,"CellChat")):
+        print(f"检测到Advanced_analytics/{group_dir}/CellChat文件夹")
+        cellchat_group_result =[]
+        for root, dirs, files in os.walk(os.path.join(all_celltype_dir,"CellChat")):
+          if "cellchat_results.rds" in files:
+            cellchat_group_result.append(os.path.basename(root))
+        for cellchat_group in cellchat_group_result:
+          src = os.path.join(all_celltype_dir, "CellChat", cellchat_group) + "/"
+          dst = os.path.join(ALL_CELLTYPE_report_dir, "07_CellChat", cellchat_group)
+          os.makedirs(dst, exist_ok=True)
+          subprocess.call(f'rsync -av --exclude="*.rds" {src} {dst}', shell=True)
   else:
-    print("未检测到Advanced_analytics/all文件夹")
+    print("未在Advanced_analytics检测到任何文件夹")
 
 def project_make(id, project, department, sequencing, Ref, out_dir):
     """

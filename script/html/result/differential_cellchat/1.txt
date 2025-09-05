@@ -2,40 +2,42 @@
 <p1>采用CellChat软件对2组间细胞通讯的差异进行分析。
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Network_Images/diff_network_interaction.png</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/07_CellChat/*/compare_interaction_number_strength.png</pics>
 <p2>图. 各组通讯数量统计柱状图。</p2>
 
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Network_Images/diff_network_count_circle.png</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/07_CellChat/*/diff_*_interaction_number_network.png</pics>
 <p2>图. 差异Count值通讯网络图。红色表示通讯数量增加，蓝色表示通讯数量减少</p2>
 
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Network_Images/diff_network_weight_circle.png</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/07_CellChat/*/diff_*_interaction_strength_network.png</pics>
 <p2>图. 差异Weight值通讯网络图。红色表示通讯数量增加，蓝色表示通讯数量减少</p2>
 
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Network_Images/diff_network_heatmap.png</pics>
-<p2>图. 差异通讯热图。</p2>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/07_CellChat/*/diff_*_interaction_number_heatmap.png</pics>
+<p2>图. 差异Count值通讯热图。</p2>
 
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Network_Images/diff_network_rank.png</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/07_CellChat/*/diff_*_interaction_strength_heatmap.png</pics>
+<p2>图. 差异Weight值通讯热图。</p2>
+
+<span><br></span>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/07_CellChat/*/information_flow_of_each_signaling_pathway.png</pics>
 <p2>图. 各个通路在分组中的占比。</p2>
 
-<span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Network_Images/diff_network_bubble.png</pics>
-<p2>图. 各个分组的细胞通路气泡图。</p2>
+
 
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Network_Images/diff_network_bubble_up_down.png</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/07_CellChat/*/diff_*_bubble_plot.png</pics>
 <p2>图. 分组间差异通讯气泡图。</p2>
 
 <span><br></span>
 <get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
-各组通讯数量统计柱状图		= SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Network_Images/diff_network_interaction.png;
-差异Count值通讯网络图		= SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Network_Images/diff_network_count_circle.png;
-差异Weight值通讯网络图		= SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Network_Images/diff_network_weight_circle.png;
-差异通讯热图				= SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Network_Images/diff_network_heatmap.png;
-各个通路在分组中的占比		= SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Network_Images/diff_network_rank.png;
-各个分组的细胞通路气泡图	= SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Network_Images/diff_network_bubble.png;
-分组间差异通讯气泡图		= SCGES_*/Statistical_Analysis/D_GROUP/*.Differential_Cell_Communication_CellChat/*/Network_Images/diff_network_bubble_up_down.png;
+各组通讯数量统计柱状图		= SCGES_*/Advanced_analytics/*/07_CellChat/*/compare_interaction_number_strength.png;
+差异Count值通讯网络图		= SCGES_*/Advanced_analytics/*/07_CellChat/*/diff_*_interaction_number_network.png;
+差异Weight值通讯网络图		= SCGES_*/Advanced_analytics/*/07_CellChat/*/diff_*_interaction_strength_network.png;
+差异Count值通讯热图				= SCGES_*/Advanced_analytics/*/07_CellChat/*/diff_*_interaction_number_heatmap.png;
+差异Weight值通讯热图				= SCGES_*/Advanced_analytics/*/07_CellChat/*/diff_*_interaction_strength_heatmap.png;
+各个通路在分组中的占比		= SCGES_*/Advanced_analytics/*/07_CellChat/*/information_flow_of_each_signaling_pathway.png;
+分组间差异通讯气泡图		= SCGES_*/Advanced_analytics/*/07_CellChat/*/diff_*_bubble_plot.png;
 '</get>

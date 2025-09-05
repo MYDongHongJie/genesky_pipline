@@ -964,7 +964,8 @@ if ("Enrichments" %in% args) {
   "mcc" = "macaca_mulatta", # monkey
   "cfa" = "canis_lupus_familiaris", # dog
   "ssc" = "sus_scrofa", # pig
-  "gga" = "Gallus_gallus" # chicken
+  "gga" = "Gallus_gallus", # chicken
+	"Nipponia" = "Nipponia_nippon" # Nipponia nippona
 	)
 
 	species_package <- species_mapping[[opt$species]]
@@ -1433,6 +1434,8 @@ if ( "Celltyping" %in% args ){
 		single_ob <- RenameIdents(single_ob, new.cluster.ids)
 		single_ob$celltype <- Idents(single_ob)
 		}
+		#将V5的结果降为V3
+		single_ob[["RNA"]] = as(single_ob[["RNA"]], "Assay")
 		saveRDS(single_ob,file.path(output,paste0(opt$prefix,".rds")))
 		#-----------------------------plot----------------------------------------
 		rds = file.path(output,paste0(opt$prefix,".rds"))
@@ -1624,7 +1627,8 @@ if ("GSEA" %in% args) {
   "mcc" = "macaca_mulatta", # monkey
   "cfa" = "canis_lupus_familiaris", # dog
   "ssc" = "sus_scrofa", # pig
-  "gga" = "Gallus_gallus" # chicken
+  "gga" = "Gallus_gallus", # chicken
+	"Nipponia" = "Nipponia_nippon" # Nipponia nippona
 	)
 	species_package <- species_mapping[[opt$species]]
 	if(is.null(species_package)){message("species not found, please check your input");quit()}
@@ -1671,6 +1675,7 @@ if ("GSEA" %in% args) {
 		"geneSymbol" = "富集的核心基因的基因名，用“/”分割"
   )
   if ("cluster" %in% colnames(gene_file)) {
+		print("检测到cluster列")
 		results <- future_lapply(unique(as.character(gene_file$cluster)), function(clust_num) {
 			tryCatch({
 				# 创建临时和输出目录

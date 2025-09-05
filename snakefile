@@ -200,6 +200,7 @@ def get_Advanced_analytics_input(config_file):
 ADVANCED_RESULT=[]
 
 if config["subcluster"]["subset"].lower() !="all":
+    params_list = get_Advanced_analytics_input(config)
     include: "script/rules/subcluster.smk" #TODO: 亚群的脚本还没写
     ADVANCED_RESULT.append(f"{params_list["output"]}/sub.rds")
 
@@ -213,6 +214,7 @@ if config['subcluster']['module'].get("celltype",False):
             label=["sample.name", "group"], ext=[".pdf", ".png"], outdir=params_list["output"])
 
 if config['subcluster']['module'].get('diffexp',False):
+    params_list = get_Advanced_analytics_input(config)
     contract = config["subcluster"]["Diff_contract"]
     contract = contract.split(",")
     contract_splits =  [s.replace(":", "_", 1).replace(":", "-vs-", 1) for s in contract]
@@ -221,6 +223,44 @@ if config['subcluster']['module'].get('diffexp',False):
     ADVANCED_RESULT.append("log/diffexp.log")
     ADVANCED_RESULT=ADVANCED_RESULT+ expand("log/diff_enrichment_{contract_split}.log", contract_split=contract_splits)
     ADVANCED_RESULT=ADVANCED_RESULT+ expand("log/diff_GSEA_{contract_split}.log", contract_split=contract_splits)
+if config['subcluster']['module'].get('cellchat',False):
+    if species not in ["mouse","human"]:
+        raise ValueError("Cellchat analysis only support mouse and human")
+    params_list = get_Advanced_analytics_input(config)
+    if not config['subcluster']["cellchat_contract"] is None:
+        cellchat_contract = config['subcluster']["cellchat_contract"]
+        cellchat_contract = cellchat_contract.split(",")
+        cellchat_groups = [s.split(":")[0] for s in cellchat_contract]
+        cellchat_groups = list(set(cellchat_groups))
+        cellchat_groups_dic = dict()
+        for group in cellchat_groups:
+            temp = [s.split(":", 1)[1] for s in cellchat_contract if s.split(":", 1)[0] == group]
+            #list装成字符 
+            cellchat_groups_dic[group] = "+".join(temp)
+    else:
+        cellchat_groups = ["AllCells_Unsupervised"]
+    include: "script/rules/cellchat.smk"
+    ADVANCED_RESULT=ADVANCED_RESULT+ expand("{outdir}/CellChat/{cellchat_group}/cellchat_results.rds",outdir = params_list["output"],cellchat_group = cellchat_groups)
+    ADVANCED_RESULT=ADVANCED_RESULT+ expand("{outdir}/CellChat/{cellchat_group}/communication.xls", outdir = params_list["output"],cellchat_group = cellchat_groups)
+
+if config['subcluster']['module'].get('monocle',False):
+    params_list = get_Advanced_analytics_input(config)
+    M2_REQUIRED=[  f"{params_list['output']}/Monocle/monocle2.rds",
+          f"{params_list['output']}/Monocle/genes_for_order.csv",
+          f"{params_list['output']}/Monocle/diff_test_Pseudotime.txt"]
+    M2P_REQUIRED=[f"{params_list['output']}/Monocle/monocle_celltype.pdf"]
+    BEAM_REQUIRED=[  f"{params_list['output']}/Monocle/BEAM/BEAM_order.txt"]
+    method = config['subcluster']['monocle_method']
+    idents = config['subcluster']['monocle_idents']
+    pcount = config['subcluster']['monocle_pcount'] if not config['subcluster']["monocle_pcount"] is None else ""
+    maxcell = config['subcluster']['monocle_maxcell'] if not config['subcluster']["monocle_maxcell"] is None else ""
+    root= config['subcluster']['monocle_root'] if not config['subcluster']["monocle_root"] is None else ""
+    nselect = config['subcluster']['monocle_nselect'].split(",") if not config['subcluster']["monocle_nselect"] is None else ""
+    ngroup = config['subcluster']['monocle_ngroup'].split(",") if not config['subcluster']["monocle_ngroup"] is None else ""
+    ADVANCED_RESULT=ADVANCED_RESULT+M2_REQUIRED+M2P_REQUIRED
+    if config['subcluster'].get('monocle_BEAM',False):
+      ADVANCED_RESULT=ADVANCED_RESULT+BEAM_REQUIRED
+    include: "script/rules/monocle.smk"
 
 
 def all_input(wildcards):
@@ -358,6 +398,8 @@ rule SeuratQC:
         pattle = pattle,
         species = species,
         report_log = "log/report_need.log"
+    resources:
+        mpi="pmi2"
     shell:
         # 先记录运行的命令
         "echo '运行的代码是:' >> {params.report_log};"
@@ -406,6 +448,8 @@ rule Seurat_Cluster:
         rely=config["Seurat_Cluster"]["rely"],
         scFeature=scFeature,
         report_log="log/report_need.log"
+    resources:
+        mpi="pmi2"
     shell:
         "echo 运行的代码是: >> {params.report_log};"
         "echo 'Rscript {params.script_file} --input {input} --output {result_output}/02_Cluster --prefix cluster Clustering -g {params.gather} --cycle {params.cycle} --rely {params.rely} --res {params.resolution} --pattle {params.pattle} --scFeature {params.scFeature} {Seurat_Cluster_ext} ' >> {params.report_log};"
@@ -438,6 +482,8 @@ rule Cluster_plot:
         pattle=pattle,
         report_log="log/report_need.log"
     priority: 100
+    resources:
+        mpi="pmi2"
     shell:
         "echo 运行的代码是: >> {params.report_log};"
         "echo 'Rscript {params.script_file} -i {input} -o {result_output} Visualize --pattle {params.pattle} {Cluster_plot_ext}' >> {params.report_log};"
@@ -465,6 +511,8 @@ rule marker:
         avetopn = config["marker"]["avetopn"],
         #pattle =pattle,
         script_file = config["marker"]['script']
+    resources:
+        mpi="pmi2"
     shell:
         "echo '运行的代码是:' >> {output.report_log};"
         "echo 'Rscript {params.script_file} -i {input} -o {result_output}/04_Marker marker "
@@ -526,6 +574,8 @@ rule singleR:
         pattle =pattle,
         report_log="log/report_need.log"
     priority: 100
+    resources:
+        mpi="pmi2"
     shell:
         "echo '运行的代码是:' >> {params.report_log};"
         "echo 'Rscript {params.script_file} -i {input} -o {result_output}/06_singleR "

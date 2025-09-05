@@ -29,11 +29,11 @@ if (is.null(opt$read1) || is.null(opt$read2) ) {
   print_help(opt_parser)
   stop("请提供 --read1, --read2 和 --output_prefix 参数", call.=FALSE)
 }
-font_import(paths = "/home/donghj/snakemake/fonts", pattern = "Times",prompt = FALSE)
-loadfonts()
+# font_import(paths = "/home/donghj/snakemake/fonts", pattern = "Times",prompt = FALSE)
+# loadfonts()
 output = opt$output
 if(!file.exists(output)){
-	dir.create(output,resursive = TRUE)
+	dir.create(output, recursive = TRUE)
 }
 read1 = unlist(strsplit(opt$read1," "))
 read2 = unlist(strsplit(opt$read2," "))
@@ -48,7 +48,6 @@ if (!(length(read1) == length(read2) && length(read2) == length(sample))) {
 # 数据读取和合并
 # ========================
 for (i in seq_len(length(sample))) {
-	print(i)
   read_file1 = read1[i]
   read_file2 = read2[i]
 	r1 <- read.table(read_file1, header=FALSE, sep="\t", skip=3)

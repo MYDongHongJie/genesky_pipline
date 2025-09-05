@@ -12,6 +12,8 @@ rule fastqc_raw:
         log = f"log/{{sample}}_fastqc.log"
     threads: 10
     priority: 100
+    resources:
+        mpi="pmi2"
     params:
         use_fastqc = config["software"]["fastqc"]
     shell:
@@ -55,6 +57,8 @@ rule fqchk_raw:
     params:
         use_seqtk = config["software"]["Seqtk"]
     priority: 100
+    resources:
+        mpi="pmi2"
     shell:
         """
         {params.use_seqtk} fqchk {input.r1} > {output.r1_quality} 
@@ -78,6 +82,8 @@ rule fastp:
         log = f"log/{{sample}}_fastp.log"
     threads: 10
     priority: 100
+    resources:
+        mpi="pmi2"
     params:
         use_fastp = config["software"]["fastp"],
         length_required = 28 if platforms == "10X" else 150,
@@ -95,6 +101,8 @@ rule fastqc_clean:
         log = f"log/{{sample}}_fastqc_clean.log"
     threads: 10
     priority: 100
+    resources:
+        mpi="pmi2"
     params:
         use_fastqc = config["software"]["fastqc"]
     shell:
@@ -109,6 +117,8 @@ rule fqchk_clean:
         r2_quality = f"{result_output}/fataQC/{{sample}}/final_R2.quality.txt",
         log = f"log/{{sample}}_fqchk_clean.log"
     priority: 100
+    resources:
+        mpi="pmi2"
     params:
         use_seqtk = config["software"]["Seqtk"]
     shell:
@@ -121,6 +131,8 @@ rule stat_txt:
         txt = f"{result_output}/fataQC/{{sample}}/stat.txt",
         log = f"log/{{sample}}_stat.log"
     priority: 100
+    resources:
+        mpi="pmi2"
     shell:
         """
         python script/parse_fastp_json.py {input.json} {output.txt}
@@ -153,8 +165,9 @@ if platforms == "10X":
         threads: 12
         priority: 0
         resources:
-            mem_mb=90000
+            mem_mb=90000,
             #slurm_partition=used_batch
+            mpi="pmi2"
         params: 
             no_create_bam = '--no-bam' if nobam else '',
             include_introns = "true" if include_introns else "false",
@@ -232,6 +245,8 @@ if platforms == "10X":
                         f"{result_output}/cellranger/aggr/_versions",
                         directory(f"{result_output}/cellranger/aggr/SC_RNA_AGGREGATOR_CS"),
                         f"{result_output}/cellranger/aggr/aggr.mri.tgz"])
+        resources:
+            mpi="pmi2"
         shell:
             """
             # 1. 清理并创建目录
@@ -274,6 +289,8 @@ if platforms == "10X":
             expand("{result_output}/report/SCGES_单细胞转录组测序分析报告/01.Quality_Statistics/Quality_Images/{sample}_error_rate{ext}",sample=SAMPLES_NAME,ext=[".png",".pdf"],result_output=result_output),
             expand("{result_output}/report/SCGES_单细胞转录组测序分析报告/01.Quality_Statistics/Quality_Images/{sample}_final_error_rate{ext}",sample=SAMPLES_NAME,ext=[".png",".pdf"],result_output=result_output),
             expand("{result_output}/report/SCGES_单细胞转录组测序分析报告/02.CellRanger/CellRanger_Summary.xlsx",result_output=result_output)
+        resources:
+            mpi="pmi2"
         shell:
             '''
             Rscript ./script/Cellranger_report_arranger_10X.r  --read1 '{input.r1_quality_raw}'  --read2 '{input.r2_quality_raw}' -s '{SAMPLES_NAME}'  -f false  -o {result_output}/report/SCGES_单细胞转录组测序分析报告/01.Quality_Statistics/Quality_Images &&
@@ -304,8 +321,9 @@ if platforms == "huadaC4":
         threads: 12
         priority: 0
         resources:
-            mem_mb=180000
+            mem_mb=180000,
             #slurm_partition=used_batch
+            mpi="pmi2"
         shell:
             "{used_dnbc4tools} rna run --threads 12 --expectcells 10000 --outdir {result_output}/cellranger/ --cDNAfastq1 {input.f1} --cDNAfastq2 {input.f2} --oligofastq1 {input.o1} --oligofastq2 {input.o2} --name {wildcards.sample} --genomeDir {ref} && rename filter_matrix filtered_feature_bc_matrix {result_output}/cellranger/{wildcards.sample}/output/*"
 
@@ -329,6 +347,8 @@ if platforms == "huadaC4":
             expand("{result_output}/report/SCGES_单细胞转录组测序分析报告/01.Quality_Statistics/Quality_Images/{sample}_error_rate{ext}",sample=SAMPLES_NAME,ext=[".png",".pdf"],result_output=result_output),
             expand("{result_output}/report/SCGES_单细胞转录组测序分析报告/01.Quality_Statistics/Quality_Images/{sample}_final_error_rate{ext}",sample=SAMPLES_NAME,ext=[".png",".pdf"],result_output=result_output),
             expand("{result_output}/report/SCGES_单细胞转录组测序分析报告/02.CellRanger/CellRanger_Summary.xlsx",result_output=result_output)
+        resources:
+            mpi="pmi2"
         shell:
             '''
             Rscript ./script/Cellranger_report_arranger_10X.r  --read1 '{input.r1_quality_raw}'  --read2 '{input.r2_quality_raw}' -s '{SAMPLES_NAME}'  -f false  -o {result_output}/report/SCGES_单细胞转录组测序分析报告/01.Quality_Statistics/Quality_Images &&
@@ -355,6 +375,8 @@ rule Cellranger_report:
         cell_count = config['cellranger']['cell_count'],
         base_count_gt = config['cellranger']['base_count_gt'],
         base_count_le = config['cellranger']['base_count_le']
+    resources:
+        mpi="pmi2"
     shell:
          """
             script/check_cellranger_result.py \
@@ -383,6 +405,8 @@ rule wechat_notice:
         log = "log/wechat_notice.log"
     params:
         log_simple = lambda wildcards, input, output: log_simplify(input.log)
+    resources:
+        mpi="pmi2"
     shell:
         "python script/wechat_notice.py \
                 --AT {person} \
@@ -396,6 +420,8 @@ rule wechat_notice2:
         rules.Cellranger_report.output.qc_log
     output:
         log = "log/wechat_notice2.log"
+    resources:
+        mpi="pmi2"
     shell:
         "python script/wechat_notice2.py \
                 --qc_files {input} \

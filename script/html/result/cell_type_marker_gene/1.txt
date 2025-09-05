@@ -8,26 +8,26 @@
 <p1>用来定义细胞类型的marker基因平均表达量热图如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/08.All_Celltype/Ident_CellType_Markers/nofacet_averageexp_heatmap.png</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/Ident_CellType_Markers/nofacet_averageexp_heatmap.png</pics>
 <p2>图. marker基因平均表达量热图。</p2>
 
 <span><br></span>
 <p1>用来定义细胞类型的marker基因表达量气泡图如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/08.All_Celltype/Ident_CellType_Markers/nofacet_dotplot.png</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/Ident_CellType_Markers/nofacet_dotplot.png</pics>
 <p2>图. marker基因表达量气泡图。</p2>
 
 <span><br></span>
 <p1>用来定义细胞类型的marker基因堆叠小提琴图如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/08.All_Celltype/Ident_CellType_Markers/nofacet_stacked_vlnplot.png</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/Ident_CellType_Markers/nofacet_stacked_vlnplot.png</pics>
 <p2>图. marker基因堆叠小提琴图。</p2>
 
 <span><br></span>
 <get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
-marker基因平均表达量热图		= SCGES_*/08.All_Celltype/Ident_CellType_Markers/nofacet_averageexp_heatmap.png;
-marker基因表达量气泡图	= SCGES_*/08.All_Celltype/Ident_CellType_Markers/nofacet_dotplot.png;
-marker基因堆叠小提琴图		= SCGES_*/08.All_Celltype/Ident_CellType_Markers/nofacet_stacked_vlnplot.png;
+marker基因平均表达量热图		= SCGES_*/Advanced_analytics/*/Ident_CellType_Markers/nofacet_averageexp_heatmap.png;
+marker基因表达量气泡图	= SCGES_*/Advanced_analytics/*/Ident_CellType_Markers/nofacet_dotplot.png;
+marker基因堆叠小提琴图		= SCGES_*/Advanced_analytics/*/Ident_CellType_Markers/nofacet_stacked_vlnplot.png;
 '</get>
