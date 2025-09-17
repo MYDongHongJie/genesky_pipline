@@ -120,6 +120,22 @@ def ckeck_dir(result_dir,out_dir):
           dst = os.path.join(ALL_CELLTYPE_report_dir, "07_CellChat", cellchat_group)
           os.makedirs(dst, exist_ok=True)
           subprocess.call(f'rsync -av --exclude="*.rds" {src} {dst}', shell=True)
+      #检测Monocle文件夹
+      Monocle_dir = os.path.join(all_celltype_dir , "Monocle")
+      if os.path.isdir(Monocle_dir):
+        print(f"检测到Advanced_analytics/{group_dir}/Monocle文件夹")
+        MONOCLER_report_dir = os.path.join(ALL_CELLTYPE_report_dir , "08_Monocle")
+        os.makedirs(MONOCLER_report_dir, exist_ok=True)
+        subprocess.call(f'cp -r {Monocle_dir}/{{BEAM,trajectory_*,genes_for_order.csv}} {MONOCLER_report_dir}', shell=True)
+      #检测Monocle文件夹
+      scenicn_dir = os.path.join(all_celltype_dir , "SCENIC")
+      if os.path.isdir(scenicn_dir):
+        print(f"检测到Advanced_analytics/{group_dir}/SCENIC文件夹")
+        SCENIC_report_dir = os.path.join(ALL_CELLTYPE_report_dir , "09_SCENIC")
+        os.makedirs(SCENIC_report_dir, exist_ok=True)
+        subprocess.call(f'cp -r {scenicn_dir}/plot/* {SCENIC_report_dir}', shell=True)
+      else:
+        print("未检测到Advanced_analytics/{group_dir}/Monocle文件夹")
   else:
     print("未在Advanced_analytics检测到任何文件夹")
 

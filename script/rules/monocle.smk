@@ -82,7 +82,8 @@ rule Monocle2Plot:
         M2P_REQUIRED
     params:
         report_log = "log/report_need.log",
-        outdir = params_list['output']+"/Monocle/",  # 你之前定义的目录变量
+        outdir = params_list['output']+"/Monocle/",
+        Monocle2Plot_ext = Monocle2Plot_ext,  # 你之前定义的目录变量
     resources:
         mem_mb=20000,
         mpi="pmi2"
@@ -90,10 +91,10 @@ rule Monocle2Plot:
     shell:
         "echo '运行的代码是:' >> {params.report_log}; "
         "echo   source /home/genesky/software/conda/23.3.1/bin/activate /home/genesky/software/monocle/2.30.1 &&"
-        "echo ' Rscript   /home/donghj/monocle/PlotMonocle2.R --rds {input[0]} --diff {input[2]} --output {params.outdir} ' >> {params.report_log}; "
+        "echo ' Rscript   /home/donghj/monocle/PlotMonocle2.R --rds {input[0]} --diff {input[2]} {Monocle2Plot_ext} --output {params.outdir} ' >> {params.report_log}; "
         "  source /home/genesky/software/conda/23.3.1/bin/activate /home/genesky/software/monocle/2.30.1 && "
         "{{ "
-        "if Rscript   /home/donghj/monocle/PlotMonocle2.R --rds {input[0]} --diff {input[2]} --output {params.outdir} "
+        "if Rscript   /home/donghj/monocle/PlotMonocle2.R --rds {input[0]} --diff {input[2]} {Monocle2Plot_ext} --output {params.outdir} "
         " 2>> {params.report_log}; then "
         "    echo '[SUCCESS] rule Monocle2Plot OK' >> {params.report_log}; "
         "  else "

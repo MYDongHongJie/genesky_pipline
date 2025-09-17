@@ -13,7 +13,8 @@ rule fastqc_raw:
     threads: 10
     priority: 100
     resources:
-        mpi="pmi2"
+        mpi="pmi2",
+        mem_mb=12000
     params:
         use_fastqc = config["software"]["fastqc"]
     shell:
@@ -58,7 +59,8 @@ rule fqchk_raw:
         use_seqtk = config["software"]["Seqtk"]
     priority: 100
     resources:
-        mpi="pmi2"
+        mpi="pmi2",
+        mem_mb=12000
     shell:
         """
         {params.use_seqtk} fqchk {input.r1} > {output.r1_quality} 
@@ -83,7 +85,8 @@ rule fastp:
     threads: 10
     priority: 100
     resources:
-        mpi="pmi2"
+        mpi="pmi2",
+        mem_mb=12000
     params:
         use_fastp = config["software"]["fastp"],
         length_required = 28 if platforms == "10X" else 150,
@@ -102,7 +105,8 @@ rule fastqc_clean:
     threads: 10
     priority: 100
     resources:
-        mpi="pmi2"
+        mpi="pmi2",
+        mem_mb=12000
     params:
         use_fastqc = config["software"]["fastqc"]
     shell:
@@ -118,7 +122,8 @@ rule fqchk_clean:
         log = f"log/{{sample}}_fqchk_clean.log"
     priority: 100
     resources:
-        mpi="pmi2"
+        mpi="pmi2",
+        mem_mb=12000
     params:
         use_seqtk = config["software"]["Seqtk"]
     shell:
@@ -132,7 +137,8 @@ rule stat_txt:
         log = f"log/{{sample}}_stat.log"
     priority: 100
     resources:
-        mpi="pmi2"
+        mpi="pmi2",
+        mem_mb=1000
     shell:
         """
         python script/parse_fastp_json.py {input.json} {output.txt}
@@ -246,7 +252,8 @@ if platforms == "10X":
                         directory(f"{result_output}/cellranger/aggr/SC_RNA_AGGREGATOR_CS"),
                         f"{result_output}/cellranger/aggr/aggr.mri.tgz"])
         resources:
-            mpi="pmi2"
+            mpi="pmi2",
+            mem_mb=12000
         shell:
             """
             # 1. 清理并创建目录
@@ -290,7 +297,8 @@ if platforms == "10X":
             expand("{result_output}/report/SCGES_单细胞转录组测序分析报告/01.Quality_Statistics/Quality_Images/{sample}_final_error_rate{ext}",sample=SAMPLES_NAME,ext=[".png",".pdf"],result_output=result_output),
             expand("{result_output}/report/SCGES_单细胞转录组测序分析报告/02.CellRanger/CellRanger_Summary.xlsx",result_output=result_output)
         resources:
-            mpi="pmi2"
+            mpi="pmi2",
+            mem_mb=1200
         shell:
             '''
             Rscript ./script/Cellranger_report_arranger_10X.r  --read1 '{input.r1_quality_raw}'  --read2 '{input.r2_quality_raw}' -s '{SAMPLES_NAME}'  -f false  -o {result_output}/report/SCGES_单细胞转录组测序分析报告/01.Quality_Statistics/Quality_Images &&
@@ -322,6 +330,7 @@ if platforms == "huadaC4":
         priority: 0
         resources:
             mem_mb=180000,
+            cpus=10,
             #slurm_partition=used_batch
             mpi="pmi2"
         shell:
@@ -348,7 +357,8 @@ if platforms == "huadaC4":
             expand("{result_output}/report/SCGES_单细胞转录组测序分析报告/01.Quality_Statistics/Quality_Images/{sample}_final_error_rate{ext}",sample=SAMPLES_NAME,ext=[".png",".pdf"],result_output=result_output),
             expand("{result_output}/report/SCGES_单细胞转录组测序分析报告/02.CellRanger/CellRanger_Summary.xlsx",result_output=result_output)
         resources:
-            mpi="pmi2"
+            mpi="pmi2",
+            mem_mb=1200
         shell:
             '''
             Rscript ./script/Cellranger_report_arranger_10X.r  --read1 '{input.r1_quality_raw}'  --read2 '{input.r2_quality_raw}' -s '{SAMPLES_NAME}'  -f false  -o {result_output}/report/SCGES_单细胞转录组测序分析报告/01.Quality_Statistics/Quality_Images &&
@@ -376,7 +386,8 @@ rule Cellranger_report:
         base_count_gt = config['cellranger']['base_count_gt'],
         base_count_le = config['cellranger']['base_count_le']
     resources:
-        mpi="pmi2"
+        mpi="pmi2",
+        mem_mb=1200
     shell:
          """
             script/check_cellranger_result.py \

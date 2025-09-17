@@ -214,6 +214,11 @@ sub_Celltyping=subparsers$add_parser("Celltyping",help = "add celltype to rds")
 sub_Celltyping$add_argument("-s","--re_sample_diff",type="character",default="re_sample_diff.txt",help="rename sample and define group file")
 sub_Celltyping$add_argument("-c","--cluster",type="character",default="anno.txt",help="anno file")
 sub_Celltyping$add_argument("--pattle",type="character",default="customecol2_light",help = "Color palette")
+#========================Subcluster parameters =========================
+sub_Subcluster=subparsers$add_parser("Subcluster",help = "add celltype to rds")
+sub_Subcluster$add_argument("-s","--res",type="double",default=0.4,help="降维聚类的分辨率")
+sub_Subcluster$add_argument("-b","--batch",type="character",default="harmony",help="去批次的方法")
+
 opt = parser$parse_args()
 #------------------------------------- GLOBAL Process ------------------------------------------
 output = opt$output
@@ -284,7 +289,7 @@ if ( "QC" %in% args ){
 	}else {
 		single_ob = readRDS(opt$input)
 		if (grepl('5',single_ob@version)){
-			 single_ob <- JoinLayers(single_ob)
+			 try(single_ob <- JoinLayers(single_ob))
 		}
 	}
 	if ( !is.null(opt$subset) ){
@@ -499,7 +504,7 @@ if ( "Clustering" %in% args ){
 	}else {
 		single_ob = readRDS(opt$input)
 		if (grepl('5',single_ob@version)){
-			 single_ob <- JoinLayers(single_ob)
+			 try(single_ob <- JoinLayers(single_ob))
 		}
 	}
 	if ( !is.null(opt$subset) ){
@@ -695,7 +700,7 @@ if ( "Visualize" %in% args ){
 	}else {
 		single_ob = readRDS(opt$input)
 		if (grepl('5',single_ob@version)){
-			 single_ob <- JoinLayers(single_ob)
+			 try(single_ob <- JoinLayers(single_ob))
 		}
 	}
 	if ( !is.null(opt$subset) ){
@@ -757,7 +762,7 @@ if ( "marker" %in% args ){
 	}else {
 		single_ob = readRDS(opt$input)
 		if (grepl('5',single_ob@version)){
-			 single_ob <- JoinLayers(single_ob)
+			 try(single_ob <- JoinLayers(single_ob))
 		}
 	}
 	if ( !is.null(opt$subset) ){
@@ -1166,7 +1171,7 @@ if ( "singleR" %in% args ){
 	}else {
 		single_ob = readRDS(opt$input)
 		if (grepl('5',single_ob@version)){
-			 single_ob <- JoinLayers(single_ob)
+			 try(single_ob <- JoinLayers(single_ob))
 		}
 	}
 	if ( !is.null(opt$subset) ){
@@ -1338,7 +1343,7 @@ if ( "loupeR" %in% args ){
 	}else {
 		single_ob = readRDS(opt$input)
 		if (grepl('5',single_ob@version)){
-			 single_ob <- JoinLayers(single_ob)
+			 try(single_ob <- JoinLayers(single_ob))
 		}
 	}
 	if ( !is.null(opt$subset) ){
@@ -1386,7 +1391,7 @@ if ( "Celltyping" %in% args ){
 	}else {
 		single_ob = readRDS(opt$input)
 		if (grepl('5',single_ob@version)){
-			 single_ob <- JoinLayers(single_ob)
+			 try(single_ob <- JoinLayers(single_ob))
 		}
 	}
 	if ( !is.null(opt$subset) ){
@@ -1463,7 +1468,7 @@ if ( "diffexp" %in% args ){
 	}else {
 		single_ob = readRDS(opt$input)
 		if (grepl('5',single_ob@version)){
-			 single_ob <- JoinLayers(single_ob)
+			 try(single_ob <- JoinLayers(single_ob))
 		}
 	}
 	if ( !is.null(opt$subset) ){
@@ -1756,5 +1761,84 @@ if ("GSEA" %in% args) {
 	# }
 	Anal_time = Sys.time() - start_time
 	print(paste("GSEA 分析已结束，耗时：", round(as.numeric(Anal_time, units = "mins"),2),"分钟"))
+	quit()
+}
+#-------------------------------------sub Subcluster------------------------------------------------
+if ("Subcluster" %in% args) {
+	start_time = Sys.time()
+	print("Subcluster分析开始")
+  if(is.null(opt$input)){
+		print('No input file or rds')
+		quit()
+	}else {
+		single_ob = readRDS(opt$input)
+		if (grepl('5',single_ob@version)){
+			 try(single_ob <- JoinLayers(single_ob))
+		}
+	}
+	if ( !is.null(opt$subset) ){
+      df = single_ob@meta.data
+      desired_cells= subset(df, eval( parse(text=opt$subset)))
+      single_ob = single_ob[, rownames(desired_cells)]
+  }
+	DefaultAssay(single_ob) = opt$assay
+  
+	if(tolower(opt$batch)=="harmony"){
+			single_ob = Seurat::FindVariableFeatures(single_ob, loess.span = 0.3,
+																clip.max = "auto", mean.function = "FastExpMean",
+																dispersion.function = "FastLogVMR", num.bin = 20,
+																nfeature = 2000, binning.method = "equal_width" )
+			single_ob<-ScaleData(single_ob,feature=rownames(single_ob)) %>% RunPCA(verbose = FALSE) %>% RunHarmony( group.by.vars = "sample.name")
+			single_ob<-RunUMAP(single_ob, reduction = "harmony", dims = 1:20)
+			single_ob<-RunTSNE(single_ob, reduction = "harmony", dims = 1:20)
+			single_ob <- FindNeighbors(single_ob, reduction = "harmony", dims = 1:20) %>% FindClusters(resolution = opt$res)    
+	}else if(tolower(opt$batch)=="cca"){
+      ifnb.list <- SplitObject(single_ob, split.by = "sample.name")
+			#meta_features = single_ob@assays$RNA@meta.features
+			#独立地对每个数据集进行归一化和识别变量要素
+			ifnb.list <- lapply(X = ifnb.list, FUN = function(x) {
+					x <- NormalizeData(x)
+					x <- FindVariableFeatures(x, selection.method = "vst", nfeatures = 3000)
+			})
+			#选择跨数据集重复可变的要素进行集成
+			features <- SelectIntegrationFeatures(object.list = ifnb.list)
+			#使用FindIntegrationAnchors()函数识别锚点，该函数将Seurat对象列表作为输入，并使用这些锚点将两个数据集与IntegrateData()集成在一起
+			immune.anchors <- FindIntegrationAnchors(object.list = ifnb.list, anchor.features = features)
+			#此命令创建“集成”数据分析
+			#if ( is.null(opt$kweight) ){
+			kweight = 100
+			# } else {
+			# kweight = opt$kweight
+			# }
+			single_ob <- IntegrateData(anchorset = immune.anchors,k.weight = opt$kweight)
+			#指定我们将对校正后的数据执行下游分析注意原始未修饰数据仍驻留在“RNA”测定中
+			Seurat::DefaultAssay(single_ob) <- "integrated"
+			single_ob <- ScaleData(single_ob, verbose = FALSE)
+			# single_ob@assays$RNA@var.features <- single_ob@assays$integrated@var.features
+			# single_ob@assays$RNA@scale.data <- single_ob@assays$integrated@scale.data
+			# single_ob@assays$RNA@meta.features <- meta_features
+			single_ob <- RunPCA(single_ob, features = VariableFeatures(object = single_ob), verbose = FALSE)
+			single_ob <- RunUMAP(single_ob, reduction = "pca", dims = 1:20)
+			single_ob <- RunTSNE(single_ob, reduction = "pca", dims = 1:20)
+			single_ob <- FindNeighbors(single_ob, reduction = "pca", dims = 1:20)
+			single_ob <- FindClusters(single_ob,resolution = opt$res)
+
+	}else{
+			single_ob <- single_ob%>%NormalizeData()
+			single_ob <- ScaleData(single_ob,feature=rownames(single_ob), verbose = FALSE)
+			single_ob <- FindVariableFeatures(object = single_ob,selection.method = 'vst', nfeatures = 2000)
+			single_ob <- RunPCA(single_ob,  features = VariableFeatures(object = single_ob) ,verbose = FALSE)
+			single_ob <- RunUMAP(single_ob, reduction = "pca", dims = 1:20)
+			single_ob <- RunTSNE(single_ob, reduction = "pca", dims = 1:20)
+			single_ob <- FindNeighbors(single_ob, reduction = "pca", dims = 1:20)
+			single_ob <- FindClusters(single_ob,resolution = opt$res)
+	}
+	#findmarker
+  marker = FindAllMarkers(single_ob,min.pct=0.1,group.by="seurat_clusters",verbose = FALSE)
+	marker = marker %>% select(gene,everything())
+	write.table(marker,file = file.path(output,"subcluster_marker.xls"),quote = FALSE,sep = "\t",row.names = FALSE, col.names = TRUE)
+	saveRDS(single_ob,file.path(output,paste0(opt$prefix,".rds")))
+	Anal_time = Sys.time() - start_time
+	print(paste("Subcluster 分析已结束，耗时：", round(as.numeric(Anal_time, units = "mins"),2),"分钟"))
 	quit()
 }

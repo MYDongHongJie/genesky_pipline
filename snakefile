@@ -71,10 +71,20 @@ person_list = {'donghj': "董宏杰", 'hangxh': "韩晓和", "zhouyh": "周元�
 #工作人员确定
 user=os.getenv("USER")
 person = person_list[user]
-
 cwd = os.getcwd()
 abs_path = os.path.join(cwd,result_output)
 # ------------------------ 生成样本树（2层：group-sample） ------------------------
+#检测是否有sample_info文件
+if not os.path.exists(sample_info):
+    rawdatapath = os.path.join("/home/pub/project/research", contract_number)
+    files = os.listdir(rawdatapath)
+    samples = set()
+    for f in files:
+        match = re.sub(r'_(R1|R2)\.fastq\.gz$', '', f)
+        samples.add(match)
+    with open(sample_info, "w") as out:
+        for s in sorted(samples):
+            out.write(f"{s}\t{s}\n")
 def TreeSampleInfo_2level(file):
     sampletree = Tree()
     sampletree.create_node(tag='root', identifier='0_root')
@@ -112,6 +122,39 @@ def get_fastq_path(wildcards):
         return base
     else:
         return  os.path.abspath(TMP_DIR)
+
+def convert_to_r_format(subset_str):
+    """
+    将 "celltype:Bcell,Tcell;sample.name:sample1" 转换为R格式
+    """
+    conditions = []
+    
+    for condition in subset_str.split(';'):
+        if ':' in condition:
+            field, values_str = condition.split(':', 1)
+            field = field.strip()
+            values = [v.strip() for v in values_str.split(',') if v.strip()]
+            
+            if values:
+                # 使用两个单引号表示R中的单引号
+                values_r = ', '.join([f"\"{v}\"" for v in values])
+                conditions.append(f"{field} %in% c({values_r})")
+    # ext = 
+    # ext = '\'\''+ext+'\'\''
+    return ' & '.join(conditions)
+def find_subfolder_names_with_bam(root_dir):
+    """
+    返回 root_dir 下所有包含 'possorted_genome_bam.bam' 文件的子文件夹名称列表
+    """
+    result = []
+    target = "possorted_genome_bam.bam"
+
+    for dirpath, _, filenames in os.walk(root_dir):
+        if target in filenames:
+            # 只取当前文件夹的名字
+            result.append(os.path.basename(dirpath))
+    return result
+
 
 #报错处理
 onerror:
@@ -185,14 +228,18 @@ def get_Advanced_analytics_input(config_file):
         params_list["output"] = f"{result_output}/Advanced_analytics/all"
     else:
         # 例如 "celltype:Bcell,Tcell;sample.name:sample1"
-        sub_rds_load = config_file["subcluster"]["subset"].replace(";", "_").replace(":", "_")
-        params_list["input"] = f"{result_output}/Advanced_analytics/{sub_rds_load}/sub.rds"
+        sub_rds_load = config_file["subcluster"]["subset"].replace(";", "_").replace(":", "_").replace(",", "_")
+        params_list["input"] = f"{result_output}/Advanced_analytics/{sub_rds_load}/recluster/sub.rds"
         params_list["output"] = f"{result_output}/Advanced_analytics/{sub_rds_load}"
     #修改分组和新的样本名
-    re_sample_diff_file = config_file["subcluster"]["re_sample_diff_file"]
-    if not os.path.exists(re_sample_diff_file):
-        raise ValueError(f"分组和重命名样本名文件 {re_sample_diff_file} 不存在！")
-    params_list["re_sample_diff_file"] = re_sample_diff_file
+    if config_file["subcluster"]["re_sample_diff_file"] is not None and config_file["subcluster"]["re_sample_diff_file"] != "":
+        re_sample_diff_file = config_file["subcluster"]["re_sample_diff_file"]
+        if not os.path.exists(re_sample_diff_file):
+            raise ValueError(f"分组和重命名样本名文件 {re_sample_diff_file} 不存在！")
+        else:
+            params_list["re_sample_diff_file"] = re_sample_diff_file
+    else:
+        params_list["re_sample_diff_file"] = ""
     return params_list
 
 
@@ -201,8 +248,18 @@ ADVANCED_RESULT=[]
 
 if config["subcluster"]["subset"].lower() !="all":
     params_list = get_Advanced_analytics_input(config)
-    include: "script/rules/subcluster.smk" #TODO: 亚群的脚本还没写
-    ADVANCED_RESULT.append(f"{params_list["output"]}/sub.rds")
+    if config["subcluster"]["subcluster_rds"] =='all':
+        rule_subcluster_input = f"{result_output}/Advanced_analytics/all/celltype_annoted.rds"
+    else:
+        rule_subcluster_input = config["subcluster"]["subcluster_rds"]
+#检查文件是否存在
+    if not os.path.exists(rule_subcluster_input):
+        raise ValueError(f"文件 {rule_subcluster_input} 不存在！")
+    subset_ext=convert_to_r_format(config["subcluster"]["subset"])
+    print(f"选择的细胞类型为{subset_ext}")
+    include: "script/rules/subcluster.smk" 
+    ADVANCED_RESULT.append(f"{params_list["input"]}")
+    ADVANCED_RESULT.append(params_list["output"]+"/recluster/sub.cloupe")
 
 if config['subcluster']['module'].get("celltype",False):
     params_list = get_Advanced_analytics_input(config)
@@ -248,8 +305,8 @@ if config['subcluster']['module'].get('monocle',False):
     M2_REQUIRED=[  f"{params_list['output']}/Monocle/monocle2.rds",
           f"{params_list['output']}/Monocle/genes_for_order.csv",
           f"{params_list['output']}/Monocle/diff_test_Pseudotime.txt"]
-    M2P_REQUIRED=[f"{params_list['output']}/Monocle/monocle_celltype.pdf"]
-    BEAM_REQUIRED=[  f"{params_list['output']}/Monocle/BEAM/BEAM_order.txt"]
+    M2P_REQUIRED=[f"{params_list['output']}/Monocle/trajectory_order_tree/cell_trajectory_Pseudotime.pdf"]
+    BEAM_REQUIRED=[  f"{params_list['output']}/Monocle/BEAM/BEAM_order.xls"]
     method = config['subcluster']['monocle_method']
     idents = config['subcluster']['monocle_idents']
     pcount = config['subcluster']['monocle_pcount'] if not config['subcluster']["monocle_pcount"] is None else ""
@@ -257,10 +314,61 @@ if config['subcluster']['module'].get('monocle',False):
     root= config['subcluster']['monocle_root'] if not config['subcluster']["monocle_root"] is None else ""
     nselect = config['subcluster']['monocle_nselect'].split(",") if not config['subcluster']["monocle_nselect"] is None else ""
     ngroup = config['subcluster']['monocle_ngroup'].split(",") if not config['subcluster']["monocle_ngroup"] is None else ""
+    Monocle2Plot_ext = f"--colorby {config['subcluster']['monocle_colorby']}"
+    Monocle2Plot_ext = Monocle2Plot_ext + f" --merge {config['subcluster']['monocle_merge']}" if not config['subcluster']["monocle_merge"] is None else Monocle2Plot_ext
     ADVANCED_RESULT=ADVANCED_RESULT+M2_REQUIRED+M2P_REQUIRED
     if config['subcluster'].get('monocle_BEAM',False):
       ADVANCED_RESULT=ADVANCED_RESULT+BEAM_REQUIRED
     include: "script/rules/monocle.smk"
+
+if config['subcluster']['module'].get('scenic',False):
+    params_list = get_Advanced_analytics_input(config)
+    tfdb = all_specis[species]["tf"]
+    featuredb = all_specis[species]["feather"]
+    motifdb = all_specis[species]["tbl"]
+
+    if config['subcluster']['scenic_subset'] is None:
+        subset = ""
+    else:
+        subset = f"--subset {config['subcluster']['scenic_subset']}"
+
+    if config["subcluster"]["scenic_downsample"] is None:
+        downsample = ""
+    else:
+        downsample = f"--downsample {config["subcluster"]["scenic_downsample"]}"
+    path = os.path.join(params_list['output'],"SCENIC/temp")
+    file_exists = os.path.isfile(os.path.join(path, 'sub_cells.rds'))
+    if file_exists:
+        rds = os.path.join(path, 'sub_cells.rds')
+    else:
+        rds = f"{params_list['output']}/celltype_annoted.rds"
+    get_CSI_group_raw = config["subcluster"]["scenic_groupby"]
+    get_CSI_group = get_CSI_group_raw.split(",")[0]
+    scenic_result_plot = f"{params_list['output']}/SCENIC/plot"
+    include: "script/rules/scenic.smk"
+    ADVANCED_RESULT.append(f"{scenic_result_plot}/3.Cisplot/CSI_heatmap.csv")
+
+if config['subcluster']['module'].get('scvelo',False):
+    params_list = get_Advanced_analytics_input(config)
+    CellRanger_Res = os.path.join(result_output,"cellranger")
+    sample_cellrangers=find_subfolder_names_with_bam(CellRanger_Res)
+    gtf_file = os.path.join(all_specis[species]["10X_dir"],"genes")
+    if os.path.exists(os.path.join(gtf_file,"genes.gtf.gz")):
+        os.makedirs(os.path.join(result_output,"loom"),exist_ok=True)
+        subprocess.call([f"gunzip -c {gtf_file}/genes.gtf.gz >{result_output}/loom/genes.gtf"],shell=True)
+        gtf = os.path.join(result_output,"loom/genes.gtf")
+    else:
+        gtf = os.path.join(gtf_file,"genes.gtf")
+    loom_want = expand("{result_output}/loom/{sample}.loom",sample=sample_cellrangers,result_output=result_output)
+    if config['subcluster']['scvelo_subset'] is None:
+        scvelo_subset = ""
+    else:
+        scvelo_subset = f"--subset {config['subcluster']['scvelo_subset']}"
+    ADVANCED_RESULT=ADVANCED_RESULT+ loom_want
+    ADVANCED_RESULT.append(f"{params_list['output']}/SCVELO/adata_with_scvelo.h5ad")
+    ADVANCED_RESULT.append(f"{params_list['output']}/SCVELO/velocity_data.xls")
+    include: "script/rules/scvelo.smk"
+
 
 
 def all_input(wildcards):

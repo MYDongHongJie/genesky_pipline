@@ -3,56 +3,38 @@
 </p1>
 <p1>最终数据统计如下：
 </p1>
-<p2>表. 基因聚类结果表。</p2>
-<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/Trajectory_Monocle_Summary.xlsx -s 1</get>
-<span><br></span>
-<p2>表. 细胞拟时分析结果表。</p2>
-<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/Trajectory_Monocle_Summary.xlsx -s 2</get>
-<span><br></span>
-<p1>表格标题说明：
-</p1>
-<get>perl /D_SCRIPT/tools/read_excel_readme.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/Trajectory_Monocle_Summary.xlsx -s README</get>
 
 <p1>细胞类型拟时排序结果如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/trajectory_celltype.png</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/08_Monocle/trajectory_pseudotime_reduction/cell_trajectory_color_by_celltype.png</pics>
 <p2>图. 细胞类型拟时排序结果。</p2>
 
 <p1>细胞类型拟时排序拆分结果如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/trajectory_celltype_split.png</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/08_Monocle/trajectory_pseudotime_reduction/cell_trajectory_group_by_celltype.png</pics>
 <p2>图. 细胞类型拟时排序拆分结果。</p2>
 
 <span><br></span>
 <p1>拟时时间排序结果：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/trajectory_pseudotime.png</pics>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/08_Monocle/trajectory_pseudotime_reduction/cell_trajectory_group_by_pseudotime.png</pics>
 <p2>图. 拟时时间排序结果。</p2>
 
-<span><br></span>
-<p1>拟时时间在聚类中的分布结果：
-</p1>
-<span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/pseudotime.png</pics>
-<p2>图. 拟时时间在聚类中的分布结果。</p2>
 
 <span><br></span>
-<p1>各细胞类型表达量热图如下：
+<p1>拟时序热图如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/monocle_heatmap.png</pics>
-<p2>图. 各细胞类型表达量热图。</p2>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/08_Monocle/trajectory_gene_fig/monocle_gene_heatmap_all.png</pics>
+<p2>图. 拟时序热图。</p2>
 
 <span><br></span>
 <get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
-基因聚类结果表(sheet 1)		= SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/Trajectory_Monocle_Summary.xlsx;
-细胞拟时分析结果表(sheet 2)	= SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/Trajectory_Monocle_Summary.xlsx;
-细胞类型拟时排序结果		= SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/trajectory_celltype.png;
-细胞类型拟时排序拆分结果	= SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/trajectory_celltype_split.png;
-拟时时间排序结果			= SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/trajectory_pseudotime.png;
-拟时时间在聚类中的分布结果	= SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/pseudotime.png;
-各细胞类型表达量热图		= SCGES_*/Statistical_Analysis/D_GROUP/*.Trajectory_Monocle/*/monocle_heatmap.png;
+细胞类型拟时排序结果		= SCGES_*/Advanced_analytics/*/08_Monocle/trajectory_pseudotime_reduction/cell_trajectory_color_by_celltype.png;
+细胞类型拟时排序拆分结果	= SCGES_*/Advanced_analytics/*/08_Monocle/trajectory_pseudotime_reduction/cell_trajectory_group_by_celltype.png;
+拟时时间排序结果			= SCGES_*/Advanced_analytics/*/08_Monocle/trajectory_pseudotime_reduction/cell_trajectory_group_by_pseudotime.png;
+拟时序热图		= SCGES_*/Advanced_analytics/*/08_Monocle/trajectory_gene_fig/monocle_gene_heatmap_all.png;
 '</get>

@@ -16,7 +16,7 @@ header:
   platform: "10X" #10X or huadaC4
   cellranger_Analysis: FALSE #是否进行cellranger，默认TRUE
   Standard_Analysis: FALSE #是否需要标准分析，默认FALSE
-  Report_create: FALSE #是否需要生成报告，默认FALSE
+  Report_create: TRUE #是否需要生成报告，默认FALSE
 cellranger:
   fastq_load: NULL #如果需要从fastq文件开始分析，填写fastq文件路径，比如/home/genesky/data/10X_singlecell3/fastq;如果为NULL，会自动判断前面fastp生成的路径
   forcell: NULL #强制细胞数，目前只支持1个数据，还不支持1个样本1个细胞数
@@ -72,25 +72,28 @@ singleR:
 #二次降维聚类
 subcluster:
   module:
-      subcell: FALSE #是否需要二次降维聚类，默认FALSE
-      celltype: FALSE #是否需要细胞类型注释，默认FALSE
-      diffexp: FALSE #是否需要差异分析，默认FALSE
-      cellchat: FALSE #是否需要细胞通讯分析，默认FALSE
+      #subcell: TRUE #是否需要二次降维聚类，默认FALSE
+      celltype: TRUE #是否需要细胞类型注释，默认FALSE
+      diffexp: TRUE #是否需要差异分析，默认FALSE
+      cellchat: TRUE #是否需要细胞通讯分析，默认FALSE
       monocle: TRUE #是否需要monocle分析，默认FALSE
-      scenic: FALSE #是否需要scenic分析，默认FALSE
-      scvelo: FALSE #是否需要scvelo分析，默认FALSE
-  subset: "all" #ALL表示用全部细胞 #"celltype:Bcell,Tcell;sample.name:sample1" #子类 可以按照sample.name和celltype,group等细胞标签去进行重降维，多个标签用分号分隔 [subcell]参数
-  celltype_file: "anno.txt" #细胞类型注释文件，填写注释文件路径
+      scenic: TRUE #是否需要scenic分析，默认FALSE
+      scvelo: TRUE #是否需要scvelo分析，默认FALSE
+  subset: "celltype:EpithelialCells;group:GroupA,GroupB,GroupC" #ALL表示用全部细胞 #"celltype:Bcell,Tcell;sample.name:sample1" #子类 可以按照sample.name和celltype,group等细胞标签去进行重降维，多个标签用分号分隔 [subcell]参数
+  subcluster_rds: "all" #如果需要指定二次降维聚类rds文件，填写rds文件路径，默认是大类的加注释的路径eg: /home/genesky/data/10X_singlecell3/result/Advanced_analytics/bbb/celltype_annoted.rds
+  subcluster_res: 0.4 #二次降维聚类的分辨率，默认0.4
+  subcluster_batch: "harmony" #二次降维聚类的批次校正方式，默认是harmony
+  celltype_file: "sub_anno.txt" #细胞类型注释文件，填写注释文件路径
   pointsize: NULL #dimplot图的点的大小,为null时会自动计算
-  re_sample_diff_file: "re_sample_diff.txt" #重新分组,重新重命名样本的信息【celltye】参数
-  Diff_contract: "group:GroupA:GroupB,group1:GroupZX:GroupZC,group:GroupB:GroupC" #分组比较的信息，用逗号分隔，用冒号分隔case和control,[diffexp]参数
+  re_sample_diff_file: "" #重新分组,重新重命名样本的信息【celltye】参数
+  Diff_contract: "group:GroupA:GroupB,group:GroupB:GroupC" #分组比较的信息，用逗号分隔，用冒号分隔case和control,[diffexp]参数
   Diff_split: "celltype" #根据某一列细胞标签进行拆分计算差异，默认是celltype，如果不需要拆分改为NULL，[diffexp]参数
   Diff_pvalue: 0.05 #差异分析pvalue阈值，默认0.05，[diffexp]参数
   Diff_logfc: 0.05 #计算差异分析logfc阈值，如果需要获得所有基因的差异信息，改为0，默认0.25，[diffexp]参数
   Diff_FC: 2 #定义显著性差异基因的FC阈值，默认2，[diffexp]参数
   #Anova_contact: "case:control1:control2,case2:control1:control2" #三组比较的信息，用逗号分隔，用冒号分隔case和control
   cellchat_cell: NULL #细胞通讯分析，需要指定细胞类型，用逗号分隔，比如Tcell,Bcell,默认全部细胞
-  cellchat_contract: "group:GroupA:GroupB,group1:GroupZX:GroupZC,group:GroupB:GroupC" #分组比较的信息，用逗号分隔，用冒号分隔case和control #如果不做分组比较，就写NULL
+  cellchat_contract: "group:GroupA:GroupB,group:GroupB:GroupC" #分组比较的信息，用逗号分隔，用冒号分隔case和control #如果不做分组比较，就写NULL
   monocle_method: 'VariableFeatures' #FindAllMarkers, VariableFeatures, dispersionTable, differentialGeneTest
   monocle_idents: 'celltype' #指定哪种细胞的标签去寻找拟时序的order基因
   monocle_nselect: NULL #筛选哪些细胞去下游分析，和monocle_idents联动
@@ -99,7 +102,13 @@ subcluster:
   monocle_pcount: 1000 #每个Ident的细胞数，默认1000
   monocle_maxcell: 20000 #最大细胞数
   monocle_BEAM: TRUE #是否进行Beam（分支点差异）分析，该分析较耗时
-
+  monocle_colorby: 'celltype,sample.name,group,State' #不能为空
+  monocle_merge: "celltype+group,celltype+sample.name" #可以为NULL
+  scenic_subset: '"group %in% c(''GroupB'') "' #可以选择哪些细胞进行scenic分析，默认全部细胞， '"group %in% c(''Con'') & celltype %in% c(''Tcell'')"' #选择Con组Tcell进行scenic分析'
+  scenic_downsample: 10000 #如果样本细胞数太多，会随机抽取10000个细胞去分析
+  scenic_groupby: "celltype,sample.name" #选择哪些列进行分组展示图
+  scvelo_subset: '"group %in% c(''GroupB'') "' #可以选择哪些细胞进行scvelo分析，默认全部细胞， '"group %in% c(''Con'') & celltype %in% c(''Tcell'')"' #选择Con组Tcell进行scvelo分析'
+  scvelo_groupby: "celltype,sample.name" #选择哪些列进行分组展示图
 software:
   fastqc: "/home/genesky/software/fastqc/0.11.9/fastqc"
   Seqtk: "/home/genesky/software/seqtk/1.3-r106/seqtk"

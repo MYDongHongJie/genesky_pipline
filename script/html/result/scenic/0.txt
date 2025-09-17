@@ -3,52 +3,40 @@
 </p1>
 <p1>转录调控SCENIC分析结果如下：
 </p1>
-<p2>表. 转录调控SCENIC分析结果统计表。</p2>
-<get>perl /D_SCRIPT/tools/read_excel.pl -e /D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/Transcription_Factors_SCENIC_Summary.xlsx -s 1</get>
-<span><br></span>
 
 <span><br></span>
-<p1>各个细胞类型RSS值显著性分析结果如下：
+<p1>基于不同细胞标签的RSS值显著性分析结果如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/RankPlot_Images/RSS_rankplot.*.png</pics>
-<p2>图. 细胞类型RSS值排序分布图。</p2>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/09_SCENIC/1.rssplot/RSS_score_heatmap_*.png</pics>
+<p2>图. 基于不同细胞标签的RSS值热图。</p2>
 
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/RSS_Images/dotplot.png</pics>
-<p2>图. 模型RSS值校气泡图。</p2>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/09_SCENIC/1.rssplot/*_rss_dotplot.png</pics>
+<p2>图. RSS值中心化（Z-score）校正气泡图。</p2>
+
 
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/RSS_Images/heatmap.png</pics>
-<p2>图. 模型RSS值热图。</p2>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/09_SCENIC/1.rssplot/Z_score_heatmap_*.png</pics>
+<p2>图. RSS值去中心化（Z-score）校正热图。</p2>
 
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/RSS_Images/heatmap_scaled.png</pics>
-<p2>图. 模型RSS值校正热图。</p2>
-
-<span><br></span>
-<p1>各个细胞类型AUC值显著性分析结果如下：
+<p1>基于不同细胞标签的AUC值显著性分析结果如下：
 </p1>
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/AUC_Images/dotplot.png</pics>
-<p2>图. 模型AUC值气泡图。</p2>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/09_SCENIC/2.AUCplot/all_regulon_activity_in_allcells.png</pics>
+<p2>图. 基于不同细胞标签的细胞水平AUC值热图。</p2>
 
 <span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/AUC_Images/heatmap.png</pics>
-<p2>图. 模型AUC值热图。</p2>
+<pics>/D_REPORT/SCGES_*/Advanced_analytics/*/09_SCENIC/2.AUCplot/regulon_activity_in_*.png</pics>
+<p2>图. 基于不同细胞标签的AUC值热图。</p2>
 
-<span><br></span>
-<pics>/D_REPORT/SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/AUC_Images/heatmap_scaled.png</pics>
-<p2>图. 模型AUC值校正热图。</p2>
 
 <span><br></span>
 <get>perl /D_SCRIPT/tools/find_files.pl -r /D_REPORT/ -f '
-转录调控SCENIC分析结果统计表	= SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/Transcription_Factors_SCENIC_Summary.xlsx;
-细胞类型RSS值排序分布图			= SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/RankPlot_Images/RSS_rankplot.*.png;
-模型RSS值校气泡图				= SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/RSS_Images/dotplot.png;
-模型RSS值热图					= SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/RSS_Images/heatmap.png;
-模型RSS值校正热图				= SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/RSS_Images/heatmap_scaled.png;
-模型AUC值气泡图					= SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/AUC_Images/dotplot.png;
-模型AUC值热图					= SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/AUC_Images/heatmap.png;
-模型AUC值校正热图				= SCGES_*/Statistical_Analysis/D_GROUP/*.Transcription_Factors_SCENIC/*/AUC_Images/heatmap_scaled.png;
+基于不同细胞标签的RSS值热图			= SCGES_*/Advanced_analytics/*/09_SCENIC/1.rssplot/RSS_score_heatmap_*.png;
+RSS值中心化（Z-score）校正气泡图				= SCGES_*/Advanced_analytics/*/09_SCENIC/1.rssplot/*_rss_dotplot.png;
+RSS值去中心化（Z-score）校正热图					= SCGES_*/Advanced_analytics/*/09_SCENIC/1.rssplot/Z_score_heatmap_*.png;
+基于不同细胞标签的细胞水平AUC值热图				= SCGES_*/Advanced_analytics/*/09_SCENIC/2.AUCplot/all_regulon_activity_in_allcells.png;
+基于不同细胞标签的AUC值热图					= SCGES_*/Advanced_analytics/*/09_SCENIC/2.AUCplot/regulon_activity_in_*.png;
 '</get>
